@@ -1,0 +1,345 @@
+﻿@model ListaArea
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>SUBAREAS</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+<h3>SubAreas de @Model.AreaUnica.Nombre</h3>
+
+<table class="table table-condensed table-bordered">
+    @if (Model.ListaSubAreas.Count() == 0)
+    {
+        <tr><td colspan="3" class="text-center"><font color="red">No existen SubAreas en @Model.AreaUnica.Nombre!</font></td></tr>
+    }
+    else
+    {
+        <tr><th>Id</th><th>SubArea</th><th>Acción</th></tr>
+
+        foreach (var SubArea in Model.ListaSubAreas)
+        {
+            <tr>
+                <td>@SubArea.Id</td> 
+                <td>@SubArea.Nombre</td>
+        
+
+                <td class="text-center">
+                    <form asp-action="Delete" method="post">
+                        <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModalBuscar" onclick="getDataAjax('@SubArea.Id','getSubAreaEventoModalAjax')">Supervisor</a>
+                        <a asp-action="FormularioEditSubArea" class="btn btn-sm btn-warning" asp-route-SubAreaId="@SubArea.Id">Editar</a>
+                        @*<a asp-action="DeleteSubArea" class="btn btn-danger btn-sm" asp-route-SubAreaId="@SubArea.Id">
+                            Eliminar2
+                        </a>*@
+                        <a class="btn btn-sm btn-danger" onclick="ConfirmarEliminarSubArea('@SubArea.Id')">Eliminar</a>
+
+                    </form>
+                </td>
+
+
+            </tr>
+        }
+    }
+</table>
+<a class="btn btn-primary" asp-action="FormularioCrearSubArea" asp-controller="Datos" asp-route-AreaId="@Model.AreaUnica.Id">Crear SubArea</a>
+<a class="btn btn-default" asp-action="Index" asp-controller="Datos">Cancelar</a>
+
+
+<div class="modal fade" id="myModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Administración Supervisor</font></h4>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse">
+                                    Supervisores
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body" id="body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="tabla2"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse">
+                                    Asignar Supervisores
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body" id="body">
+
+                                <div class="form-horizontal">
+                                    <div class="form-group" hidden >
+                                        <label class="col-lg-3">Id SubArea</label>
+                                        <div class="col-lg-9">
+                                            <input id="IdSubArea" readonly="readonly" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-3">SubArea</label>
+                                        <div class="col-lg-9">
+                                            <input id="IdPrueba" readonly="readonly" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Nombre Persona</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="NombrePersona" placeholder="Nombre Persona">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3"></label>
+                                        <div class="col-lg-9">
+                                            <a class="btn btn-primary btn-sm" onclick="getPersonaAjax('getPersonaModalAjax')">
+                                                Buscar
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover" id="tabla"></table>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getDataAjax(id, action) {
+       
+       
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { id },
+            success: function (response) {
+                console.log(response);
+                OnSuccess(response);
+            }
+        });
+    }
+</script>
+<script>
+    var items;
+    function OnSuccess(response) {
+  
+        items = response;
+        $.each(items, function (IndiceEventos, val) {
+            $('input[id=IdPrueba]').val(val.nombre);
+            $('input[id=IdSubArea]').val(val.id);
+            $('#tabla2').empty();
+            $('#tabla').empty();
+         
+        });
+        CargarTablaSupervisores();
+    }
+</script>
+<script>
+    function CargarTablaSupervisores() {
+   
+        var elemento = document.getElementById("IdSubArea").value;
+        var action = "CargarDatosSupervisores";
+ 
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { elemento },
+            success: function (response) {
+                console.log(response);
+                OnSuccess3(response);
+            }
+        });
+    }
+</script>
+<script>
+    var items;
+    function OnSuccess3(response) {
+      
+        items = response;
+        if (response.length == 0) {
+
+            
+        }
+        else {
+            var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+            $.each(items, function (i, row) {
+                datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='ConfirmarEliminarSupervisor(" +'"' + row.rut + '"' +")' class='btn btn-danger btn-sm'>Eliminar Supervisor</a>" + "</td></tr>"
+            });
+            datos += "</tbody></thead>";
+            $('#tabla2').html(datos)
+        }
+    }
+</script>
+<script>
+    function getPersonaAjax(action) {
+      
+        var valor = document.getElementById("NombrePersona").value;
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { valor },
+            success: function (response) {
+                console.log(response);
+                OnSuccess2(response);
+            }
+        });
+
+    }
+</script>
+<script>
+    var items;
+    function OnSuccess2(response) {
+       
+        items = response;
+        if (response.length == 0) {
+            alert("No hay personas con ese nombre");
+        }
+        else {
+            var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+            $.each(items, function (i, row) {
+                //datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick=ComprobarPersonaAjax(" + row.rut + ") class='btn btn-primary btn-sm'>Asignar Supervisor</a>" + "</td></tr>";
+                var rutstring = row.rut.toString(); 
+                datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='ComprobarPersonaAjax("+'"' + row.rut + '"'+")' class='btn btn-primary btn-sm'>Asignar Supervisor</a>" + "</td></tr>";
+            });
+            datos += "</tbody></thead>";
+            $('#tabla').html(datos)
+        }
+    }
+</script>
+<script>
+    function ComprobarPersonaAjax(rut) {
+     
+        var action = "ComprobarSupervisor";
+        var elemento = document.getElementById("IdSubArea").value;
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut: rut, IdSubArea: elemento },
+            success: function (response) {
+                
+                if (response == "Asignar") {
+              
+                    AsignarSupervisor(rut);
+                }
+                else
+                {
+                  
+                    alert("La persona ya esta asignada como supervisor");
+                }
+            }
+        });
+
+    }
+</script>
+<script>
+
+    function AsignarSupervisor(rut) {
+        var action = "AsignarSupervisor";
+        var elemento = document.getElementById("IdSubArea").value;
+        var original = "@Model.AreaUnica.Id";
+   
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut: rut, subArea: elemento, Original: original },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+</script>
+<script>
+    function ConfirmarEliminarSupervisor(rut) {
+        var AreaOriginal = "@Model.AreaUnica.Id";
+        confirmar = confirm("¿Esta seguro de eliminar el Supervisor?");
+        if (confirmar) {
+            EliminarSupervisor(rut);
+        }
+    }
+</script>
+<script>
+
+    function EliminarSupervisor(rut) {
+        var action = "EliminarSupervisor";
+        var elemento = document.getElementById("IdSubArea").value;
+        var AreaOriginal = "@Model.AreaUnica.Id";
+       
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut: rut, Area: AreaOriginal, SubArea: elemento },
+            success: function (response) {
+                location.reload();
+            }
+        });
+
+    }
+
+</script>
+
+<script>
+    function ConfirmarEliminarSubArea(SubArea) {
+        var AreaOriginal = "@Model.AreaUnica.Id";
+        confirmar = confirm("¿Esta seguro de eliminar el SubArea?");
+        if (confirmar) {
+            EliminarSubArea(SubArea,AreaOriginal);
+        }
+    }
+</script>
+<script>
+
+   function EliminarSubArea(SubArea,AreaOriginal) {
+       var action = "EliminarSubArea";
+       $.ajax({
+         type: "POST",
+         url: action,
+         data: { Area: AreaOriginal, SubArea: SubArea },
+         success: function (response) {
+            location.reload();
+              }
+         });
+
+        }
+
+ </script>

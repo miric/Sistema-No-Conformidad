@@ -1,0 +1,293 @@
+﻿@model AddEvento
+        
+
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>CLASIFICACIÓN EVENTO</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+    
+            <i></i><h4>Responda las siguientes preguntas para identificar el evento</h4>
+
+    </div>
+    <!--end  Welcome -->
+</div>
+
+@if (User.IsInRole("Estandar") || User.IsInRole("Calidad") || User.IsInRole("Admins"))
+{
+   <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <form asp-action="CrearEventoSegundaEtapa" asp-controller="Home" class="form-horizontal" role="form" method="get">
+
+
+                <div class="form-group">
+                    <label class="col-md-6">¿El evento se produce antes o despues del despacho?</label>
+                    <div class="col-md-4">
+                        <select asp-for="@Model.AntesDespuesDespacho" class="form-control" id="AntesDespuesDespachoID2" name="@Model.AntesDespuesDespacho" onchange="myFunction3()">
+                            <option value="" disabled selected>Selecciona tu opción</option>
+                            <option value="true">Antes del despacho</option>
+                            <option value="false">Despues del despacho</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="DIVDevuelveComponente2">
+                    <label class="col-md-6">¿Devuelve componente?</label>
+                    <div class="col-md-4">
+                        <select asp-for="@Model.DevuelveComponente" class="form-control" id="DevuelveComponenteID2" name="@Model.DevuelveComponente" onchange="myFunction4()">
+                            <option value="" disabled selected>Selecciona tu opción</option>
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="DIVInformeFalla2">
+                    <label class="col-md-6">¿Tiene Informe de Falla?</label>
+                    <div class="col-md-4">
+                        <select asp-for="@Model.InformeFalla" class="form-control" id="InformeFallaID2" name="@Model.InformeFalla" onchange="myFunction5()">
+                            <option value="" disabled selected>Selecciona tu opción</option>
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="DIVButtonSiguiente2">
+                    <label class="col-md-6"></label>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-default">Siguiente</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="col-md-6 hidden-sm">
+            <form asp-action="DescargarFormatoInformeFalla" asp-controller="Home" enctype="multipart/form-data" class="form-horizontal" role="form" method="post">
+
+
+                <div class="form-group">
+                
+                        <a asp-action="DownloadInformeFalla" asp-controller="Home" class="col-md-6"><i class="fa fa-sign-out fa-fw"></i>Descargar Formato Sugerido Informe de Falla</a>
+
+
+
+                    <div class="col-md-3">
+
+                   </div>
+                </div>
+
+
+
+
+
+
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+    
+            <form asp-action="CrearEventoSegundaEtapa" asp-controller="Home" class="form-horizontal" role="form" method="get">
+              
+                <div class="form-group">
+                    <label class="col-md-4">¿Devuelve Componente?</label>
+                    <div class="col-md-4">
+                        <select asp-for="@Model.DevuelveComponente" class="form-control" id="DevuelveComponenteID" name="@Model.DevuelveComponente" onchange="myFunction()">
+                            <option value="" disabled selected>Selecciona tu opción</option>
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="DIVInformeFalla">
+                    <label class="col-md-4">¿Tiene Informe de Falla?</label>
+                    <div class="col-md-4">
+                        <select asp-for="@Model.InformeFalla" class="form-control" id="InformeFallaID" name="@Model.InformeFalla" onchange="myFunction2()">
+                            <option value="" disabled selected>Selecciona tu opción</option>
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="DIVTipoEvento">
+                    <label class="col-md-4">Tipo Evento</label>
+                    <div class="col-md-4">
+                        <input class="form-control" id="TipoEvento"
+                               placeholder="Tipo Evento">
+                    </div>
+                </div>
+
+                <div class="form-group" id="DIVButtonSiguiente">
+                    <label class="col-md-4"></label>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-default">Siguiente</button>
+                    </div>
+                </div>
+
+
+
+
+           </form>
+       </div>
+        <div class="col-md-6 hidden-sm">
+            <form asp-action="DescargarFormatoInformeFalla" asp-controller="Home" enctype="multipart/form-data" class="form-horizontal" role="form" method="post">
+
+
+                <div class="form-group">
+                    <a asp-action="DownloadInformeFalla" asp-controller="Home" class="col-md-6"><i></i>Descargar Formato Sugerido Informe de Falla</a>
+
+                    <div class="col-md-3">
+                        @*<a asp-action="DownloadInformeFalla" asp-controller="Home" class="btn btn-sm btn-default">Descargar</a>*@
+                       
+
+                   </div>
+                </div>
+
+
+
+
+
+
+            </form>
+        </div>
+    </div>
+
+}
+
+
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        //JAVASCRIP PARA USUARIO CLIENTE
+
+
+
+        document.getElementById("DIVTipoEvento").style.display = 'none';
+        document.getElementById("DIVInformeFalla").style.display = 'none';
+        document.getElementById("DIVButtonSiguiente").style.display = 'none';
+        function myFunction() {
+            var x = document.getElementById("DevuelveComponenteID").value;
+            if (x == "true") {
+                alert("Tipo Evento: Reclamo Cliente"); 
+                document.getElementById("DIVInformeFalla").style.display = 'none';
+                document.getElementById("DIVButtonSiguiente").style.display = 'block';
+
+            } else {
+            
+                $('#InformeFallaID').empty();
+                $('#InformeFallaID').append('<option value="" disabled selected>  Selecciona tu opción  </option>');
+                $('#InformeFallaID').append('<option value="true">  Si  </option>');
+                $('#InformeFallaID').append('<option value="false">  No  </option>');
+                document.getElementById("DIVInformeFalla").style.display = 'block';
+                document.getElementById("DIVButtonSiguiente").style.display = 'none';
+
+
+            }
+
+        }
+
+        function myFunction2() {
+            var x = document.getElementById("InformeFallaID").value;
+            if (x == "true") {
+                alert("Tipo Evento: Queja Cliente");
+                document.getElementById("DIVButtonSiguiente").style.display = 'block';
+
+            } else {
+                document.getElementById("DIVInformeFalla").style.display = 'block';
+                document.getElementById("DIVButtonSiguiente").style.display = 'none';
+                alert("Debe disponer del informe de falla para registar el evento (Se puede descargar el formato sugerido a la derecha).");
+            }
+
+        }
+    </script>
+
+    <script>
+        //JAVASCRIP PARA USUARIO ESTANDAR,CALIDAD Y ADMINS
+
+
+
+        document.getElementById("DIVDevuelveComponente2").style.display = 'none';
+        document.getElementById("DIVInformeFalla2").style.display = 'none';
+        document.getElementById("DIVButtonSiguiente2").style.display = 'none';
+        function myFunction3() {
+
+            var AD = document.getElementById("AntesDespuesDespachoID2").value;
+            if (AD == "true") {
+                alert("Tipo Evento: Desviacion");
+
+
+                $('#DevuelveComponenteID2').empty();
+                $('#DevuelveComponenteID2').append('<option value="" disabled selected>  Selecciona tu opción  </option>');
+                $('#DevuelveComponenteID2').append('<option value="true">  Si  </option>');
+                $('#DevuelveComponenteID2').append('<option value="false">  No  </option>');
+
+
+                document.getElementById("DIVButtonSiguiente2").style.display = 'block';
+                document.getElementById("DIVDevuelveComponente2").style.display = 'none';
+                document.getElementById("DIVInformeFalla2").style.display = 'none';
+
+            } else {
+                document.getElementById("DIVButtonSiguiente2").style.display = 'none';
+                document.getElementById("DIVDevuelveComponente2").style.display = 'block';
+
+            }
+        }
+
+
+        function myFunction4() {
+            var DC = document.getElementById("DevuelveComponenteID2").value;
+            if (DC == "true") {
+                alert("Tipo Evento: Reclamo Cliente");
+                document.getElementById("DIVButtonSiguiente2").style.display = 'block';
+                document.getElementById("DIVInformeFalla2").style.display = 'none';
+                $('#InformeFallaID2').empty();
+                $('#InformeFallaID2').append('<option value="" disabled selected>  Selecciona tu opción  </option>');
+                $('#InformeFallaID2').append('<option value="true">  Si  </option>');
+                $('#InformeFallaID2').append('<option value="false">  No  </option>');
+
+             
+
+            } else {
+
+                document.getElementById("DIVButtonSiguiente2").style.display = 'none';
+          
+                document.getElementById("DIVInformeFalla2").style.display = 'block';
+            
+            }
+
+        }
+
+        function myFunction5() {
+            var IF = document.getElementById("InformeFallaID2").value;
+            if (IF == "true") {
+                alert("Tipo Evento: Queja Cliente");
+                document.getElementById("DIVButtonSiguiente2").style.display = 'block';
+
+
+            } else {
+                document.getElementById("DIVButtonSiguiente2").style.display = 'none';
+                alert("Debe disponer del informe de falla para registar el evento (Se puede descargar el formato sugerido a la derecha).");
+
+            }
+
+        }
+
+    </script>

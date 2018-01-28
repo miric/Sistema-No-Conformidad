@@ -1,0 +1,66 @@
+﻿@model CreateParte
+@{
+    ViewData["Title"] = "Datos Page";
+}
+
+@{
+    string Nombre = null;
+    if (Model.Nombre != null)
+    {
+        Nombre = Model.Nombre.TrimEnd();
+    }
+
+    string NumeroParte = null;
+    if (Model.NumeroParte != null)
+    {
+        NumeroParte = Model.NumeroParte.TrimEnd();
+    }
+}
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR PARTE</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<div>
+    <div class="col-lg-10">
+        <form asp-action="FormularioEditParte" class="form-horizontal" method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <div class="form-group">
+                <label asp-for="@Model.ParteId" class="col-lg-2 ">Id</label>
+                <div class="col-lg-3">
+                    <input asp-for="ParteId" class="form-control" required readonly="readonly" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.Nombre" class="col-lg-2 ">Nombre</label>
+                <div class="col-lg-3">
+                    <input asp-for="Nombre" class="form-control" required  />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.NumeroParte" class="col-lg-2 ">Numero Parte</label>
+                <div class="col-lg-3">
+                    <input asp-for="NumeroParte" class="form-control" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Editar Parte</button>
+            <a asp-action="IndiceParte" class="btn btn-default">Cancelar</a>
+        </form>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>

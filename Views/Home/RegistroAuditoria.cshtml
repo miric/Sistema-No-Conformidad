@@ -1,0 +1,151 @@
+﻿
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>REGISTRAR AUDITORIA</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+
+
+<form asp-action="RegistroAuditoria" enctype="multipart/form-data" class="form-horizontal" role="form" method="post">
+    <div class="form-group">
+        @Html.Label("Fecha Identificación", null, new { @class = "col-lg-1" })
+        <div class="col-lg-3">
+            <input class="form-control" @*name="FechaIdentificacion" asp-for="@Model.EventoUnico.FechaIdentificacion"*@ type="date" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-1">Archivos</label>
+        <div class="col-lg-5">
+            <p>Se puede seleccionar uno o mas archivos</p>
+            <input type="file" name="files" multiple />
+        </div>
+
+
+    </div>
+    <div class="form-group">
+        <label class="col-lg-1">Descripción</label>
+        <div class="col-lg-5">
+            <textarea @*asp-for="@Model.Evento.Descripcion" name="@Model.Evento.Descripcion"*@ class="form-control" id="IdDescripcion" placeholder="Descripcion"> </textarea>
+        </div>
+    </div>
+
+</form>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+        $(function () {
+            $("#IdEquipo").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getModeloId";
+                var ddlsource = "#IdEquipo";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Modelo</option > "';
+                    //var items = "";
+                    $("#IdModelo").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#IdModelo").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+<script>
+        $(function () {
+            $("#IdModelo").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getComponenteId";
+                var ddlsource = "#IdModelo";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Modelo</option > "';
+                    //var items = "";
+                    $("#IdComponente").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#IdComponente").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+<script>
+        $(function () {
+            $("#IdComponente").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getParteId";
+                var ddlsource = "#IdComponente";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Componente</option > "';
+                    //var items = "";
+                    $("#IdParte").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#IdParte").html(items);
+                })
+            });
+
+
+        });
+
+
+
+
+
+</script>
+
+
+<script>
+        $(function () {
+            $("#IdArea").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getAreaId";
+                var ddlsource = "#IdArea";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la SubArea</option > "';
+                    $("#IdSubArea").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#IdSubArea").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>

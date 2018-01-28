@@ -1,0 +1,977 @@
+﻿@model AnalisisCausaRaizModels
+
+
+@{
+    string variable = "";
+    if (Model.RCAUnica.Descripcion != null)
+    {
+        variable = Model.RCAUnica.Descripcion.TrimEnd();
+
+    }
+
+}
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR CAUSA</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+<form asp-action="FormularioEditCausa" asp-controller="AnalisisCausaRaiz" class="form-horizontal" role="form" enctype="multipart/form-data" method="post">
+
+
+    <div class="text-danger" asp-validation-summary="All"></div>  
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                Datos
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group" hidden>
+                                <label asp-for="@Model.EventoId" class="col-lg-4">Id Evento</label>
+                                <div class="col-lg-7">
+                                    <input asp-for="@Model.EventoId" class="form-control" id="wolabel"
+                                           placeholder="wo" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="@Model.EventoId" class="col-lg-4">Id Causa</label>
+                                <div class="col-lg-7">
+                                    <input asp-for="@Model.RCAUnica.Id" class="form-control" id="wolabel"
+                                           placeholder="wo" readonly="readonly">
+                                </div>
+                            </div>
+
+                            @if (Model.RCAUnica.FechaRegistro != null)
+                            {
+                                <div class="form-group">
+                                    @Html.Label("Fecha Registro", null, new { @class = " col-lg-4" })
+                                    <div class="col-lg-7">
+                                        <input class="form-control" name="FechaRegistro" asp-for="@Model.RCAUnica.FechaRegistro" type="date" required />
+                                    </div>
+
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.Label("Fecha Registro", null, new { @class = " col-lg-4" })
+                                    <div class="col-lg-7">
+                                        <input class="form-control" name="FechaRegistro" type="date" required />
+                                    </div>
+
+                                </div>
+                            }
+
+                            <div class="form-group">
+                                <label class="col-lg-4">¿Se Acepta No Conformidad?</label>
+                                <div class="col-lg-7">
+                                    <select name="@Model.NCAceptada" asp-for="@Model.EventoUnico.Ncaceptada" class="form-control" id="sel2" required>
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+                                        <option value="true">Si</option>
+                                        <option value="false">No</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Origen Falla</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.RCAUnica.IdOrigenFalla" class="form-control" id="sel2">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+
+                                        @foreach (var kvp in Model.ListaOrigenFalla)
+                                        {
+                                            <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Falla Primaria</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.FallaPrimaria" class="form-control" id="FallaPrimariaID">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+
+                                        @foreach (var kvp in Model.ListaFallaPrimaria)
+                                        {
+                                            <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Falla Secundaria</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.FallaSecundaria" class="form-control" id="FallaSecundariaID">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+                                        @if (Model.RCAUnica.IdFallaSecundaria == null && Model.FallaPrimaria != null)
+                                        {
+
+                                            @foreach (var kvp in Model.ListaFallaSecundaria.Where(c=>c.IdFallaPrimaria==Model.RCAUnica.IdFallaPrimaria))
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+                                        }
+                                   
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Costos</label>
+                                <div class="col-lg-7">
+                                    <input asp-for="@Model.RCAUnica.Costo" class="form-control" id="SerieComponente"
+                                           placeholder="Costos">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Descripción</label>
+                                <div class="col-lg-7">
+                                    <textarea class="form-control" id="textarea" name="Descripcion" asp-for="@variable"
+                                              placeholder="Descripción"> </textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Archivos</label>
+                                <div class="col-lg-7">
+                                    <p>Se puede seleccionar uno o mas archivos</p>
+                                    <input type="file" name="files" multiple />
+                                </div>
+                            </div>
+
+
+                            @if (Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("AnalisisCausaRaiz")).Count() > 0)
+                            {
+
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Archivos</th>
+                                            <th>Fecha Registro</th>
+                                            <th>Accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var ar in Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd() == "AnalisisCausaRaiz"))
+                                        {
+                                            <tr>
+                                                <td><a style="color:dodgerblue">@ar.Nombre</a></td>
+                                                <td>@ar.FechaRegistro</td>
+                                                <td>
+
+                                                    <a asp-action="DownloadRCAFile" asp-controller="AnalisisCausaRaiz" class="btn btn-sm btn-default" asp-route-Identificador="@ar.Identificador.TrimEnd()" asp-route-filename="@ar.Nombre.TrimEnd()" asp-route-Tipo="Evento" asp-route-IdRCA="@Model.RCAUnica.Id.TrimEnd()">Descargar</a>
+
+                                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                    {
+
+                                                        @*<a asp-action="DeleteArchivo" asp-controller="EventoSecuencia" class="btn btn-danger btn-sm" asp-route-FileId="@ar.FileId" asp-route-EventoId="@Model.EventoUnico.Id.TrimEnd()">
+                                                            Eliminar
+                                                        </a>*@
+                                                        <a onclick="ConfirmarEliminarArchivo('@ar.FileId')" class="btn btn-sm  btn-danger">Eliminar</a>
+
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.RutPersona == Model.PersonaUnica.Rut && c.IdEvento == Model.EventoUnico.Id) != null && Model.EventoUnico.Estado == 4)
+                                                        {
+                                                            @*<a asp-action="DeleteArchivo" asp-controller="EventoSecuencia" class="btn btn-danger btn-sm" asp-route-FileId="@ar.FileId" asp-route-EventoId="@Model.EventoUnico.Id.TrimEnd()">
+                                                                Eliminar
+                                                            </a>*@
+                                                            <a onclick="ConfirmarEliminarArchivo('@ar.FileId')" class="btn btn-sm  btn-danger">Eliminar</a>
+                                                        }
+                                                    }
+
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+
+
+
+
+
+        </div>
+
+
+        @*---------------Levels----------------------*@
+        <div class="col-md-6 hidden-sm">
+
+
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
+                                Mapa Causa Raiz
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="">
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4">Causal 1</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.Causa1" class="form-control" id="Causa1">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausa1)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                                @*<div class="form-group">
+                                    <label class="col-lg-4">Causal 2</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.Causa2" class="form-control" id="Causa2">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausa2)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>*@
+                                @if (Model.Causa1 != null)
+                                {
+
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causal 2</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.Causa2" class="form-control" id="Causa2">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+                                                @foreach (var kvp in Model.ListaCausa2.Where(c => c.IdLevel1 == Model.Causa1))
+                                                {
+                                                    <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causal 2</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.Causa2" class="form-control" id="Causa2">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                @if (Model.Causa2 != null)
+                                {
+
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causal 3</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.Causa3" class="form-control" id="Causa3">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+                                                @foreach (var kvp in Model.ListaCausa3)
+                                                {
+                                                    <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causal 3</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.Causa3" class="form-control" id="Causa3">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+                                
+
+
+
+                                @*<div class="form-group">
+                                    <label class="col-lg-4">Causal 3</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.Causa3" class="form-control" id="Causa3">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausa3)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>*@
+
+
+
+                                @*<div class="form-group">
+                                    <label class="col-lg-4">Causal 4</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.Causa4" class="form-control" id="Causa4">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausa4)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>*@
+
+                                @if (Model.Causa3 != null)
+                                {
+
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causal 4</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.Causa4" class="form-control" id="Causa4">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+                                                @foreach (var kvp in Model.ListaCausa4.Where(C=>C.IdLevel3==Model.Causa3))
+                                                {
+                                                    <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causal 4</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.Causa4" class="form-control" id="Causa4">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4">Causal 5</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.Causa5" class="form-control" id="Causa5">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausa5)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4">Causa Intermedia 1</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.CausaIntermedia1" class="form-control" id="CausaIntermedia1">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausaIntermedia1)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                @*<div class="form-group">
+                                    <label class="col-lg-4">Causa Intermedia 2</label>
+                                    <div class="col-lg-8">
+                                        <select asp-for="@Model.CausaIntermedia2" class="form-control" id="CausaIntermedia2">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaCausaIntermedia2)
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>*@
+
+                                @if (Model.CausaIntermedia1 != null)
+                                {
+
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causa Intermedia 2</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.CausaIntermedia2" class="form-control" id="CausaIntermedia2">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+
+                                                @foreach (var kvp in Model.ListaCausaIntermedia2)
+                                                {
+                                                    <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <label class="col-lg-4">Causa Intermedia 2</label>
+                                        <div class="col-lg-8">
+                                            <select asp-for="@Model.CausaIntermedia2" class="form-control" id="CausaIntermedia2">
+                                                <option value="" disabled selected>Selecciona tu opción</option>
+
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse">
+                                Procesos
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="Proceso" class="panel-collapse collapse in">
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label class="col-lg-4"></label>
+                                <div class="col-lg-7">
+                                    <h3>Procesos</h3>   
+                                </div>
+                            </div>
+
+        
+                            <div class="form-group">
+                                <label class="col-lg-4">Proceso nivel 1</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.Proceso1" class="form-control" id="Proceso1ID">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+
+                                        @foreach (var kvp in Model.ListaProceso1)
+                                        {
+                                            <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            @if (Model.Proceso1 != null)
+                            {
+
+                                <div class="form-group">
+                                    <label class="col-lg-4">Proceso nivel 2</label>
+                                    <div class="col-lg-7">
+                                        <select asp-for="@Model.Proceso2" class="form-control" id="Proceso2ID">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaProceso2.Where(c=>c.IdProceso1==Model.Proceso1))
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label class="col-lg-4">Proceso nivel 2</label>
+                                    <div class="col-lg-7">
+                                        <select asp-for="@Model.Proceso2" class="form-control" id="Proceso2ID">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                   
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+
+                            @if (Model.Proceso2 != null)
+                            {
+
+                                <div class="form-group">
+                                    <label class="col-lg-4">Proceso nivel 3</label>
+                                    <div class="col-lg-7">
+                                        <select asp-for="@Model.Proceso3" class="form-control" id="Proceso3ID">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+                                            @foreach (var kvp in Model.ListaProceso3.Where(c => c.IdProceso2 == Model.Proceso2))
+                                            {
+                                                <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label class="col-lg-4">Proceso nivel 3</label>
+                                    <div class="col-lg-7">
+                                        <select asp-for="@Model.Proceso3" class="form-control" id="Proceso3ID">
+                                            <option value="" disabled selected>Selecciona tu opción</option>
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+
+
+                            @*<div class="form-group">
+                                <label class="col-lg-4">Proceso nivel 3</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.Proceso3" class="form-control" id="Proceso1">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+
+                                        @foreach (var kvp in Model.ListaProceso3)
+                                        {
+                                            <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Proceso nivel 4</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.Proceso4" class="form-control" id="Proceso4">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+
+                                        @foreach (var kvp in Model.ListaProceso4)
+                                        {
+                                            <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-4">Proceso nivel 5</label>
+                                <div class="col-lg-7">
+                                    <select asp-for="@Model.Proceso5" class="form-control" id="Proceso5">
+                                        <option value="" disabled selected>Selecciona tu opción</option>
+
+                                        @foreach (var kvp in Model.ListaProceso5)
+                                        {
+                                            <option value="@kvp.Id">@kvp.Nombre</option>
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+
+        </div>
+        </div>
+               
+
+            <button type="submit" class="btn btn-warning">Editar</button>
+            <a asp-action="Index" asp-controller="EventoSecuencia" class="btn btn-default" asp-route-EventoID="@Model.EventoId">Cancelar</a>
+</form>
+
+
+        
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+        $(function () {
+            $("#Causa1").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getCausa2Id";
+                var ddlsource = "#Causa1";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la opcion</option > "';
+                    //var items = "";
+                    $("#Causa2").empty();
+                    $("#Causa3").empty();
+                    $('#Causa3').append('<option value="" disabled selected>  Selecciona Causal 2 Primero </option>');
+                    $("#Causa4").empty();
+                    $('#Causa4').append('<option value="" disabled selected>  Selecciona Causal 3 Primero </option>');
+                    $("#Causa5").empty();
+                    $('#Causa5').append('<option value="" disabled selected>  Selecciona Causal 4 Primero </option>');
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#Causa2").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+<script>
+        $(function () {
+            $("#Causa2").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getCausa3Id";
+                var ddlsource = "#Causa2";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona causal 3</option > "';
+                    //var items = "";
+                    $("#Causa3").empty();
+                    $("#Causa4").empty();
+                    $('#Causa4').append('<option value="" disabled selected>  Selecciona Causal 3 Primero </option>');
+                    $("#Causa5").empty();
+                    $('#Causa5').append('<option value="" disabled selected>  Selecciona Causal 4 Primero </option>');
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#Causa3").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+
+<script>
+        $(function () {
+            $("#Causa3").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getCausa4Id";
+                var ddlsource = "#Causa3";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona causal 4</option > "';
+                    //var items = "";
+                    $("#Causa4").empty();
+                    $("#Causa5").empty();
+                    $('#Causa5').append('<option value="" disabled selected>  Selecciona Causal 4 Primero </option>');
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#Causa4").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+<script>
+        $(function () {
+            $("#Causa4").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getCausa5Id";
+                var ddlsource = "#Causa4";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona causal 5</option > "';
+                    //var items = "";
+                    $("#Causa5").empty();
+               
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#Causa5").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+
+<script>
+        $(function () {
+            $("#FallaPrimariaID").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getFallaSecundaria";
+                var ddlsource = "#FallaPrimariaID";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la Falla Secundaria</option > "';
+                    //var items = "";
+                    $("#FallaSecundariaID").empty();
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#FallaSecundariaID").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+<script>
+        $(function () {
+            $("#Proceso1ID").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getProceso2";
+                var ddlsource = "#Proceso1ID";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Proceso Nivel 2</option > "';
+                    //var items = "";
+                    $("#Proceso2ID").empty();
+                    $("#Proceso3ID").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#Proceso2ID").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+<script>
+        $(function () {
+            $("#Proceso2ID").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getProceso3";
+                var ddlsource = "#Proceso2ID";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Proceso Nivel 3</option > "';
+                    //var items = "";
+                    $("#Proceso3ID").empty();
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#Proceso3ID").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+<script>
+        $(function () {
+            $("#CausaIntermedia1").change(function () {
+
+                var url = '@Url.Content("~/")' + "AnalisisCausaRaiz/getCausaIntermedia2Id";
+                var ddlsource = "#CausaIntermedia1";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona causa intermedia 2</option > "';
+                    //var items = "";
+                    $("#CausaIntermedia2").empty();
+                
+
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#CausaIntermedia2").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+<script>
+        function ConfirmarEliminarArchivo(Id) {
+            confirmar = confirm("¿Esta seguro de eliminar el archivo?");
+            if (confirmar) {
+                EliminarArchivo(Id);
+            }
+        }
+</script>
+<script>
+            function EliminarArchivo(Id) {
+                var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+                var action = "/EventoSecuencia/DeleteArchivo";
+
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: { EventoId: idEventoVariable, FileId: Id },
+                    success: function (response) {
+                        location.reload();
+                    }
+                });
+            }
+</script>

@@ -1,0 +1,53 @@
+﻿@model ListaArea
+@{
+    ViewData["Title"] = "Datos Page";
+}
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>CREAR SUBAREA</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<div>
+    <div class="col-lg-10">
+        <form asp-action="FormularioCrearSubArea" class="form-horizontal" method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>
+
+                    <div class="form-group">
+                        <label   class="col-lg-2 ">Area</label>
+                        <div class="col-lg-3">
+                            <input  class="form-control" value="@Model.AreaUnica.Nombre" required readonly="readonly"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="col-lg-2 ">id Area</label>
+                        <div class="col-lg-3">
+                            <input asp-for="@Model.AreaUnica.Id" class="form-control" value="@Model.SubAreaUnica.IdArea" required  readonly="readonly"/>
+                        </div>
+                    </div>
+           
+                    <div class="form-group">
+                        <label class="col-lg-2 ">Nombre SubArea</label>
+                        <div class="col-lg-3">
+                            <input asp-for="NombreSubArea" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a asp-action="IndiceSubAreas" class="btn btn-default" asp-route-AreaId="@Model.AreaUnica.Id">Cancelar</a>
+            
+                </form>
+            </div>
+
+            <div class="col-lg-2">
+
+            </div>
+      
+    </div>

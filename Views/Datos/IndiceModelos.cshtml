@@ -1,0 +1,78 @@
+﻿@model ListaModelo
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>MODELOS</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>  
+<h3>Modelos del Equipo: @Model.EquipoUnico.Nombre</h3>
+@*<h3>EquipoID: @Model.EquipoId </h3>*@
+
+<table class="table table-condensed table-bordered">
+    @if (@Model.ListaModelos.Where(c=>c.IdEquipo==@Model.EquipoId).Count() == 0)
+    {
+        <tr><td colspan="3" class="text-center"><font color="red">No existen modelos del equipo: @Model.EquipoUnico.Nombre!</font></td></tr>
+    }
+    else
+    {
+
+    
+        <tr><th>Id Modelo</th><th>Modelo</th><th>Acción</th></tr>
+
+        @foreach (var modelo in Model.ListaModelos.Where(c => c.IdEquipo == @Model.EquipoId))
+        {
+            <tr>
+                <td>@modelo.Id</td>
+                @*<td>@Model.EquipoUnico.Nombre</td>*@
+                <td>@modelo.Nombre</td> 
+
+                <td class="text-center">
+                    <form asp-action="Delete" method="post">
+                        <a asp-action="IndiceComponentes" asp-controller="Datos" class="btn btn-sm btn-primary" asp-route-ModeloId="@modelo.Id">Componentes</a>
+                        <a asp-action="FormularioEditModelo" class="btn btn-sm btn-warning" asp-route-ModeloId="@modelo.Id">Editar</a>
+                        @*<a asp-action="DeleteModelo" class="btn btn-danger btn-sm" asp-route-ModeloId="@modelo.Id">
+                            Eliminar
+                        </a>*@
+                        <a class="btn btn-sm btn-danger" onclick="ConfirmarEliminarModelo('@modelo.Id')">Eliminar</a>
+                    </form>
+                </td>
+
+
+            </tr>
+        }
+    }
+</table>
+<a class="btn btn-primary" asp-action="FormularioCrearModelo" asp-controller="Datos" asp-route-EquipoId="@Model.EquipoUnico.Id">Crear Modelo</a>
+<a class="btn btn-default" asp-action="IndiceEquipos" asp-controller="Datos" >Cancelar</a>
+
+<script>
+    function ConfirmarEliminarModelo(Id) {
+
+        confirmar = confirm("¿Esta seguro de eliminar el Modelo?");
+        if (confirmar) {
+            EliminarModelo(Id);
+        }
+    }
+</script>
+<script>
+
+   function EliminarModelo(Id) {
+       var action = "DeleteModelo";
+       $.ajax({
+         type: "POST",
+         url: action,
+         data: { MOdeloId: Id },
+         success: function (response) {
+            location.reload();
+              }
+         });
+
+        }
+
+</script>

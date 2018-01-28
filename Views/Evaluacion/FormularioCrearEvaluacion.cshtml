@@ -1,0 +1,50 @@
+﻿@model EvaluacionModels
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>REGISTRAR EVALUACIÓN </P>
+        </div>
+    </div>
+
+</div>
+<form asp-action="FormularioCrearEvaluacion" asp-controller="Evaluacion" class="form-horizontal" role="form" method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label class="col-lg-2">EventoId</label>
+        <div class="col-lg-3">
+            <input class="form-control" asp-for="@Model.EventoId" id="opciones_1" value="@Model.EventoId" readonly="readonly" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @*<label  class="col-lg-2 control-label">Fecha Identificacion</label>*@
+        @Html.Label("Fecha Registro", null, new { @class = " col-lg-2" })
+        <div class="col-lg-3">
+            <input class="form-control" name="FechaRegistro" type="date" required />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-lg-2">¿Analisis Causa Raiz Efectivo?</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.efectivo" class="form-control" id="sel2" required>
+                <option value="" disabled selected>Selecciona tu opción</option>
+                <option value="true">Si</option>
+                <option value="false">No</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2">Descripción</label>
+        <div class="col-lg-5">
+            <textarea class="form-control" id="textarea" name="Descripcion"
+                      placeholder="Descripción"> </textarea>
+        </div>
+    </div>
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <button type="submit" asp-action="CrearFormularioAnalisis" asp-controller="Analisis" class="btn btn-primary">Registar</button>
+    <a asp-action="Index" asp-controller="EventoSecuencia" class="btn btn-default" asp-route-EventoID="@Model.EventoId">Cancelar</a>
+</form> 

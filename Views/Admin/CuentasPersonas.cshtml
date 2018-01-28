@@ -1,0 +1,140 @@
+﻿@model usuariosPersonas
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>CUENTAS PERSONAS</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+
+        CUENTAS PERSONAS
+
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-condensed table-bordered">
+                    @if (Model.ListaPersonas.Count() == 0 || Model.ListaPersonas.Count(c => c.Removed.Equals(false)) == 0)
+                    {
+                        <tr><td colspan="3" class="text-center"><font color="red">No existen personas en el sistema!</font></td></tr>
+                    }
+                    else
+                    {
+                        <tr><th>Rut</th><th>Nombre</th><th>Apellido Paterno</th><th>Apellido Materno</th><th>Sexo</th><th>Supervisor</th><th>Area</th><th>SubArea</th><th>Acción</th></tr>
+
+                        foreach (var persona in Model.ListaPersonas)
+                        {
+                            <tr>
+                                <td>@persona.Rut</td>
+                                <td>@persona.Nombre</td>
+                                <td>@persona.ApellidoPaterno</td>
+                                <td>@persona.ApellidoMaterno</td>
+                                <td>@persona.Sexo</td>
+                                @if (persona.RutSupervisor != null)
+                                {
+
+                                    <td>@Model.ListaPersonas.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut.TrimEnd().Equals(persona.RutSupervisor.TrimEnd())).nombreCompleto</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+
+                                }
+                                @*<td>@persona.RutSupervisor</td>*@
+                                @if (persona.IdArea != 0)
+                    {
+                                    <td>@Model.ListaAreas.FirstOrDefault(c => c.Id == persona.IdArea).Nombre</td>
+                                    @*<td></td>*@
+                                }
+                                else
+                                {
+                                    <td></td>
+
+                                }
+                                @if (persona.IdSubArea != 0)
+                    {
+                                    <td>@Model.ListaSubAreas.FirstOrDefault(c => c.Id == persona.IdSubArea).Nombre</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+
+                                }
+
+
+                                @*<td>@Model.ListaPersonas.FirstOrDefault(c=>c.Rut == user.RutPersona).ApellidoPaterno</td>*@
+
+
+                                @*-----------------------------------------------------*@
+                                @*<td>
+                                <form asp-action="DeletePersona" asp-controller="Admin" asp-route-rut="@persona.Rut" method="post">
+                                    <a class="btn btn-sm btn-primary" asp-action="EditPersona"
+                                       asp-route-rut="@persona.Rut">Edit</a>
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>*@
+
+                                @*<form  asp-action="FormularioEditPersona" asp-route-rut="@persona.Rut" method="post">
+                                <a asp-action="DeletePersona" class="btn btn-sm btn-primary"
+                                    asp-route-rut="@persona.Rut.ToString()">Delete</a>
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger">
+                                    Edit
+                                </button>
+
+                            </form>*@
+                                <td class="text-center">
+                                    <form asp-action="Delete" method="post">
+                                        <a asp-action="FormularioEditPersona" class="btn btn-sm btn-warning" asp-route-rut="@persona.Rut.TrimEnd()">Editar</a>
+                                        @*<a asp-action="DeletePersona" class="btn btn-danger btn-sm" asp-route-rut="@persona.Rut">
+                                            Eliminar
+                                        </a>*@
+                                        <a class="btn btn-sm btn-danger" onclick="ConfirmarEliminarPersona('@persona.Rut')">Eliminar</a>
+                                    </form>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <a class="btn btn-primary" asp-action="FormularioCrearPersona">Crear</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function ConfirmarEliminarPersona(rut) {
+
+        confirmar = confirm("¿Esta seguro de eliminar la persona?");
+        if (confirmar) {
+            EliminarPersona(rut);
+        }
+    }
+</script>
+<script>
+
+   function EliminarPersona(rut) {
+       var action = "DeletePersona";
+       $.ajax({
+         type: "POST",
+         url: action,
+         data: { rut: rut },
+         success: function (response) {
+            location.reload();
+              }
+         });
+
+        }
+
+</script>

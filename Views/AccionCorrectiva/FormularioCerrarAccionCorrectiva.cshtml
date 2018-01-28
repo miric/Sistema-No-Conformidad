@@ -1,0 +1,245 @@
+﻿@model AccionCorrectivaModels
+
+
+
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>DETALLE ACCION CORRECTIVA</P>
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="accordion-toggle"  data-parent="#accordion">
+                Especificación Acción Correctiva
+            </a>
+        </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse ">
+        <div class="panel-body center-block">
+            <div class="col-lg-12">
+                <form asp-action="FormularioEditAccionCorrectiva" asp-controller="AccionCorrectiva" class="form-horizontal " method="post">
+                  
+
+                        <div class="form-group">
+                            <label class="col-lg-2 ">Evento Id:</label>
+                            <div class="col-lg-5">
+                                <input asp-for="@Model.AccionUnica.EventoId" class="form-control" placeholder="Id" required readonly="readonly" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 ">Accion Correctiva Id:</label>
+                            <div class="col-lg-5">
+                                <input asp-for="@Model.AccionUnica.Id" class="form-control" placeholder="Id" required readonly="readonly" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 ">Responsable:</label>
+                            <div class="col-lg-5">
+                                <input asp-for="@Model.NombreCompleto" class="form-control"  required readonly="readonly" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            @Html.Label("Fecha Limite:", null, new { @class = "col-lg-2" })
+                            <div class="col-lg-5">
+                                <input class="form-control" name="FechaLimite" asp-for="@Model.AccionUnica.FechaLimite" type="date" readonly="readonly" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Causa" class="col-lg-2">Causa:</label>
+                            <div class="col-lg-5">
+                                <textarea asp-for="@Model.AccionUnica.Causa" name="Causa" class="form-control" id="textarea"
+                                          placeholder="Causa" readonly="readonly"> </textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="@Model.AccionCorrectiva" class="col-lg-2">Acción Correctiva:</label>
+                            <div class="col-lg-5">
+                                <textarea asp-for="@Model.AccionUnica.AccionCorrectiva1" name="AccionCorrectiva" class="form-control" id="textarea"
+                                          placeholder="Accion Correctiva" readonly="readonly"> </textarea>
+                            </div>
+                        </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="accordion-toggle" data-parent="#accordion">
+                Ejecución Acción Correctiva
+            </a>
+        </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse ">
+        <div class="panel-body">
+            <form asp-action="FormularioCerrarAccionCorrectiva" asp-controller="AccionCorrectiva" enctype="multipart/form-data" class="form-horizontal" role="form" method="post">
+                <div class="text-danger" asp-validation-summary="All"></div>   
+
+                <div class="form-group" hidden>
+                    <label class="col-lg-2 ">Rut Responsable:</label>
+                    <div class="col-lg-5">
+                        <input asp-for="@Model.RutPersona" class="form-control" placeholder="" required readonly="readonly"  />
+                    </div>
+                </div>
+                    <div class="form-group" hidden>
+                        <label class="col-lg-2 ">Evento Id</label>
+                        <div class="col-lg-5">
+                            <input asp-for="@Model.AccionUnica.EventoId" class="form-control" placeholder="Id" readonly="readonly" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label class="col-lg-2 ">Accion Correctiva Id</label>
+                        <div class="col-lg-5">
+                            <input asp-for="@Model.AccionUnica.Id" class="form-control" placeholder="Id"readonly="readonly" />
+                        </div>
+                    </div>
+
+
+                    @if (Model.AccionUnica.FechaEjecucion != null)
+                    {
+                        <div class="form-group">
+                            @Html.Label("Fecha Ejecución", null, new { @class = " col-lg-2" })
+                            <div class="col-lg-5">
+                                <input class="form-control" name="FechaEjecucion" asp-for="@Model.AccionUnica.FechaEjecucion" type="date" readonly="readonly" />
+                            </div>
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            @Html.Label("Fecha Ejecución", null, new { @class = " col-lg-2" })
+                            <div class="col-lg-5">
+                                <input class="form-control" name="FechaEjecucion" type="date" required />
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.AccionUnica.Descripcion != null)
+                    {
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Causa" class="col-lg-2 ">Descripción</label>
+                            <div class="col-lg-5">
+                                <textarea name="Descripcion" class="form-control" asp-for="@Model.AccionUnica.Descripcion" id="textarea"
+                                          placeholder="Causa" readonly="readonly"> </textarea>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Causa" class="col-lg-2 ">Descripción</label>
+                            <div class="col-lg-5">
+                                <textarea name="Descripcion" class="form-control" id="textarea"
+                                          placeholder="Causa" required> </textarea>
+                            </div>
+                        </div>
+
+                    }
+
+                    <div class="form-group">
+                        <label class="col-lg-2">Archivos</label>
+                        <div class="col-lg-5">
+                            <p>Se puede seleccionar uno o mas archivos</p>
+                            <input type="file" name="files" multiple />
+                        </div>
+
+
+                    </div>
+
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    @if (Model.AccionUnica.Estado.TrimEnd() != "Cerrado")
+                    {
+
+                        <button type="submit" class="btn btn-primary">Registrar Ejecución</button>
+                    }
+
+                </form>
+
+            @*----------------------------Archivos------------------------------------------------------------*@
+
+            @if (Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("AccionCorrectiva") && c.Identificador2.TrimEnd().Equals(Model.AccionUnica.Id.TrimEnd())).Count() > 0)
+            {
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Archivos</th>
+                            <th>Fecha Registro</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ar in Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("AccionCorrectiva") && c.Identificador2.TrimEnd().Equals(Model.AccionUnica.Id.TrimEnd())))
+                        {
+                            <tr>
+                                <td><a style="color:dodgerblue">@ar.Nombre</a></td>
+                                <td>@ar.FechaRegistro</td>
+                                <td>
+                                    <form asp-action="Delete" method="post">
+                                        <a asp-action="DownloadACFile" asp-controller="AccionCorrectiva" class="btn btn-sm btn-default" asp-route-Identificador="@ar.Identificador.TrimEnd()" asp-route-filename="@ar.Nombre.TrimEnd()" asp-route-Tipo="AccionCorrectiva" asp-route-IdAC="@Model.AccionUnica.Id.TrimEnd()">Descargar</a>
+
+
+
+                                        @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))   
+                                        {
+                                            <a asp-action="DeleteArchivo" asp-controller="AccionCorrectiva" class="btn btn-danger btn-sm" asp-route-FileId="@ar.FileId" asp-route-EventoId="@Model.AccionUnica.EventoId.TrimEnd()">
+                                                Eliminar
+                                            </a>
+                                        }
+                                        else
+                                        {
+   
+
+                                        }
+                                        <div class="text-danger" asp-validation-summary="All"></div>   
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            <a asp-action="Index" asp-controller="EventoSecuencia" class="btn btn-default" asp-route-EventoID="@Model.AccionUnica.EventoId.TrimEnd()">Cancelar</a>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

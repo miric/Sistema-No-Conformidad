@@ -1,0 +1,132 @@
+﻿@model ListaModelo
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR MODELO COMPONENTE</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+@*<div class="col-lg-10 col-lg-offset-2">
+        <h3>Asociar Componente al Modelo: @Model.ListaModelos.FirstOrDefault(c=>c.Id==@Model.ModeloId).Nombre</h3>
+    </div>*@
+@*<h3>Componentes del Modelo: @Model.ListaModelos.FirstOrDefault(c => c.Id == @Model.ModeloId).Nombre</h3>*@
+
+
+
+
+
+
+
+
+
+<div>
+    <div class="col-lg-10">
+        <form asp-action="FormularioEditModeloComponente" class="form-horizontal" method="post">
+
+            @*<div class="form-group">
+
+                <h3 class="col-lg-6">Asociar Componente al Modelo: @Model.ListaModelos.FirstOrDefault(c => c.Id == @Model.ModeloId).Nombre</h3>
+
+            </div>*@
+
+
+            <div class="form-group">
+                <label asp-for="@Model.EquipoId" class="col-lg-2 ">IDEquipo</label>
+                <div class="col-lg-3">
+                    <input asp-for="@Model.EquipoId" class="form-control" readonly="readonly" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.EquipoId" class="col-lg-2 ">NombreEquipo</label>
+                <div class="col-lg-3">
+                    <input asp-for="@Model.ListaEquipos.FirstOrDefault(c=>c.Id==@Model.EquipoId).Nombre" class="form-control" readonly="readonly" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.ModeloId" class="col-lg-2 ">IDModelo</label>
+                <div class="col-lg-3">
+                    <input asp-for="@Model.ModeloId" class="form-control" readonly="readonly" value="@Model.ModeloId" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.ListaModelos.FirstOrDefault(c=>c.Id==@Model.ModeloId).Nombre" class="col-lg-2 ">Nombre Modelo</label>
+                <div class="col-lg-3">
+                    <input asp-for="@Model.ListaModelos.FirstOrDefault(c=>c.Id==@Model.ModeloId).Nombre" class="form-control" readonly="readonly" />
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <label asp-for="@Model.ComponenteId" class="col-lg-2">Asociar Componente:</label>
+                <div class="col-lg-3">
+                    <select asp-for="@Model.ComponenteId" class="form-control" id="sel1" required>
+                        <option selected>@Model.ListaComponentes.FirstOrDefault(e=>e.Id== @Model.ListaModeloComponentes.FirstOrDefault(c => c.Id == @Model.ModeloComponenteId).IdComponente).Nombre     </option>
+                        @foreach (var kvp in @Model.ListaComponentes)
+                        {
+
+                            <option value="@kvp.Id">@kvp.Nombre</option>
+                        }
+
+                    </select>
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <label asp-for="@Model.ModeloComponenteId" class="col-lg-2 ">Id Modelo Componente</label>
+                <div class="col-lg-3">
+                    <input asp-for="@Model.ModeloComponenteId" class="form-control" readonly="readonly" />
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="@Model.ComponenteId" class="col-lg-2 ">Asocia Componente</label>
+                <div class="col-lg-3">
+                    <select asp-for="@Model.ComponenteId" class="form-control" id="sel1">
+
+                        @foreach (var kvp in Model.ListaComponentes)
+                        {
+                            @if (@kvp.Id == @Model.ListaModeloComponentes.FirstOrDefault(c => c.Id == @Model.ModeloComponenteId).IdComponente)
+                            {
+                                <option selected="selected" value="@kvp.Id">@kvp.Nombre</option>
+
+                            }
+                            else
+                            {
+                                <option value="@kvp.Id">@kvp.Nombre</option>
+                            }
+                        }
+
+                    </select>
+                    
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="text-danger" asp-validation-summary="All"></div>
+
+            <button type="submit" class="btn btn-primary">Asociar Componente</button>
+            <a asp-action="IndiceComponentes" class="btn btn-default" asp-route-ModeloId="@Model.ModeloId">Cancelar</a>
+        </form>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+

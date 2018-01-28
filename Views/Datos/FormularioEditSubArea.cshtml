@@ -1,0 +1,88 @@
+﻿@model ListaArea
+@{
+    //int idArea = 0;
+    //if (Model.AreaUnica.Id != 0)
+    //{
+    //    idArea = Model.AreaUnica.Id;
+    //}
+
+
+    string nombre = null;
+    if (Model.SubAreaUnica.Nombre != null)
+    {
+        nombre = Model.SubAreaUnica.Nombre.TrimEnd();
+
+    }
+
+    //string rutjefe = null;
+    //if (Model.RutJefe != null)
+    //{
+    //    rutjefe = Model.RutJefe.TrimEnd();
+
+    //}
+}
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR SUBAREA</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<form asp-action="FormularioEditSubArea" class="form-horizontal" method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="form-group" hidden>
+        <label asp-for="@Model.AreaUnica.Id" class="col-lg-1 control-label">ID Area</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.AreaUnica.Id" class="form-control" id="wolabel" value="@Model.AreaUnica.Id"
+                   placeholder="" readonly="readonly">
+        </div>
+    </div>
+
+
+    <div class="form-group" hidden>
+        <label asp-for="@Model.AreaUnica.Nombre" class="col-lg-1 control-label">Nombre Area</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.AreaUnica.Nombre" class="form-control" id="wolabel" value="@Model.AreaUnica.Nombre"
+                  readonly="readonly" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.AreaUnica.Id" class="col-lg-1 control-label">ID SubArea</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.SubAreaUnica.Id" class="form-control" id="wolabel" value="@Model.SubAreaUnica.Id"
+                   placeholder="" readonly="readonly">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-1 control-label">SubArea</label>
+        <div class="col-lg-3">
+            <input asp-for="NombreSubArea" class="form-control" id="wolabel" value="@nombre"
+                    placeholder="" required>
+        </div>
+    </div>
+    @*<div class="form-group">
+        <label class="col-lg-1 control-label">Supervisor</label>
+        <div class="col-lg-3">
+            <a asp-action="Index" class="btn btn-default">Agregar Supervisor</a>
+        </div>
+    </div>*@
+
+
+
+
+    <div class="form-group">
+        <div class="col-lg-offset-1 col-lg-10">
+            <button type="submit" class="btn btn-warning">Editar</button>
+            <a asp-action="IndiceSubAreas" asp-route-AreaId="@Model.AreaUnica.Id" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
+
+
+
+</form>

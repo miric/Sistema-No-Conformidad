@@ -1,0 +1,54 @@
+﻿@model CreateModelo
+@{
+    ViewData["Title"] = "Datos Page";
+}
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>CREAR MODELO</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<div>
+    <div class="col-lg-10">
+        <form asp-action="FormularioCrearModelo" class="form-horizontal" method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <div class="form-group">
+                <label  asp-for="@Model.EquipoId" class="col-lg-2 ">Id Equipo</label>
+                <div class="col-lg-3">
+                    <input  asp-for="@Model.EquipoId" class="form-control" required value="@Model.EquipoId" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 ">Nombre Equipo</label>
+                <div class="col-lg-3">
+                    <input class="form-control" required value="@Model.ListaEquipos.FirstOrDefault(c=>c.Id== Model.EquipoId).Nombre" readonly="readonly" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.Nombre" class="col-lg-2 ">Nombre</label>
+                <div class="col-lg-3">
+                    <input asp-for="Nombre" class="form-control" required />
+                </div>
+            </div>
+
+
+
+        
+
+            <button type="submit" class="btn btn-primary">Crear Modelo</button>
+            @*<a asp-action="IndiceModelos" class="btn btn-default">Cancel</a>*@
+            <a asp-action="IndiceModelos" class="btn btn-default" asp-route-EquipoId="@Model.EquipoId">Cancelar</a>
+        </form>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>

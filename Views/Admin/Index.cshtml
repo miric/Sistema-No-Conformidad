@@ -1,0 +1,147 @@
+﻿@model usuariosPersonas
+@{
+    string concatenar=null;
+    string variable = null;
+}
+
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>CUENTAS DE USUARIO</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+ 
+                    CUENTAS DE USUARIO
+         
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+                <div class="table-responsive">
+                    <table class="table table-condensed table-bordered">
+
+                        @if (Model.ListaUsuarios.Count() < 2)
+            {
+                            <tr><td colspan="3" class="text-center"><font color="red">No User Accounts</font></td></tr>
+                        }
+                        else
+                        {
+                            <tr><th>ID</th><th>User Name</th><th>Email</th><th>Persona</th><th>Rol</th><th>Accion</th></tr>
+
+                            foreach (var user in Model.ListaUsuarios)
+                            {
+                                <tr>
+                                    <td>@user.Id</td>
+                                    <td>@user.UserName</td>
+                                    <td>@user.Email</td>
+                                    @*<td>@Model.ListaPersonas.FirstOrDefault(c=>c.Rut == user.RutPersona).ApellidoPaterno</td>*@
+
+                                    @if (@user.UserName.Equals("Admin"))
+                    {
+                                        <td></td>
+
+                                    }
+                                    else
+                                    {
+
+                                        <td> @Model.ListaPersonas.FirstOrDefault(c => c.Rut == user.RutPersona).Nombre @Model.ListaPersonas.FirstOrDefault(c => c.Rut == user.RutPersona).ApellidoPaterno @Model.ListaPersonas.FirstOrDefault(c => c.Rut == user.RutPersona).ApellidoMaterno</td>
+
+                                    }
+
+                                    @if (@Model.ListaUserRoles.Where(c => c.UserId == @user.Id).Count() > 1)
+                    {
+
+                                        @foreach (var UserRol in @Model.ListaUserRoles.Where(c => c.UserId == @user.Id))
+                        {
+
+                            concatenar = @Model.ListaRoles.FirstOrDefault(d => d.Id == @UserRol.RoleId).NormalizedName.ToString() + "," + concatenar;
+                        }
+
+                                        <td>@concatenar</td>
+
+                                        concatenar = "";
+
+
+                                    }
+                                    else
+                                    {
+                                        @if (@Model.ListaUserRoles.Where(c => c.UserId == @user.Id).Count() == 1)
+                        {
+
+                                            <td>@Model.ListaRoles.FirstOrDefault(d => d.Id == @Model.ListaUserRoles.FirstOrDefault(c => c.UserId == @user.Id).RoleId).NormalizedName</td>
+
+                                        }
+                                        else
+                                        {
+                                            @if (@Model.ListaUserRoles.Where(c => c.UserId == @user.Id).Count() == 0)
+                            {
+
+                                                <td></td>
+
+                                            }
+                                        }
+
+
+                                    }
+
+
+                                    @*-----------------------------------------------------*@
+                                    <td>
+                                        <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                                            <a class="btn btn-sm btn-warning" asp-action="Edit"
+                                               asp-route-id="@user.Id">Editar</a>
+                                            @*<button type="submit"
+                                                    class="btn btn-sm btn-danger">
+                                                Eliminar2
+                                            </button>*@
+                                            <a class="btn btn-sm btn-danger" onclick="ConfirmarEliminarUsuario('@user.Id')">Eliminar</a>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                <a class="btn btn-primary" asp-action="Create">Crear</a>
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    function ConfirmarEliminarUsuario(Id) {
+
+        confirmar = confirm("¿Esta seguro de eliminar el usuario?");
+        if (confirmar) {
+            EliminarUsuario(Id);
+        }
+    }
+</script>
+<script>
+
+   function EliminarUsuario(Id) {
+       var action = "Admin/Delete";
+       $.ajax({
+         type: "POST",
+         url: action,
+         data: { id: Id },
+         success: function (response) {
+            location.reload();
+              }
+         });
+
+        }
+
+</script>

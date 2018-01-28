@@ -1,0 +1,470 @@
+﻿@*@model IEnumerable<FINNINGWEB.Entities.Evento>*@
+@*@model PaginatedList<FINNINGWEB.Entities.Evento>*@
+@model ListaEvento
+@{
+    ViewData["Title"] = "IndiceEventoPrueba";
+    ViewData["currentFilter"] = @ViewData["currentFilter"];
+}
+
+@{ 
+    string detalle = "Detalle";
+    TimeSpan? resta;
+}
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EVENTOS </P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <i></i>EVENTOS
+
+        </div>
+        <div class="panel-body">
+
+            @*<form asp-action="IndiceEventos" method="get">
+                <div class="form-actions no-color">
+                    <p>
+                        <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                        <input type="submit" value="Buscar" class="btn btn-default" />
+                        <a asp-action="IndiceEventos">Volver a la lista principal</a>
+                    </p>
+                </div>
+            </form>*@
+
+            <form asp-action="IndiceEventos" method="get">
+
+                <div class="form-actions no-color container">
+                  
+                    <p>
+                       
+                        <input type="text" name="SearchString" placeholder="Buscar Texto" value="@ViewData["currentFilter"]" />
+                        @*<input type="number"  placeholder="Criticidad Mayor a" name="searchIntCriticidad" value="@ViewData["currentFilterCriticidad"]" />*@
+                        <input type="number" placeholder="Días Activos Mayor a" name="searchIntDias" value="@ViewData["currentFilterDias"]" />
+                        <input type="number" name="searchIntHoras"  placeholder="Horas Mayor a" value="@ViewData["currentFilterHoras"]" />
+                        <input type="submit" value="Buscar" class="btn btn-default" />
+                        <a asp-action="IndiceEventos">Volver a la lista principal</a>
+                    </p>
+                </div>
+        
+
+
+                <div class="container">
+                    <p>
+
+                        <select id="TipoEventoId" name="TipoEventoSearch" asp-for="@Model.TipoEventoSearch">
+                            <option value="" disabled selected>Tipo Evento</option>
+                            <option value="Queja Cliente">Queja Cliente</option>
+                            <option value="Reclamo Cliente">Reclamo Cliente</option>
+                            <option value="Desviacion">Desviacion</option>
+                            <option value="Auditoria">Auditoria</option>
+                        </select>
+
+                        <select id="EstadoId" name="EstadoSearch" asp-for="@Model.EstadoSearch">
+                            <option value="" disabled selected>Estado</option>
+                            <option value="2">Pendiente Accion Inmediata</option>
+                            <option value="3">Pendiente Analisis</option>
+                            <option value="4">Pendiente Analisis Causa Raiz</option>
+                            <option value="5">Pendiente Registro Involucrados</option>
+                            <option value="6">Pendiente Acciones Correctivas</option>
+                            <option value="7">Pendiente Evaluacion</option>
+                            @*<option value="">Pendiente Respuesta Cliente</option>*@
+                            <option value="9">Pendiente Verificacion</option>
+                            <option value="10">Cerrado</option>
+                            <option value="11">Pendientes Todos</option>
+                        </select>
+
+                        <select id="AnioId" name="AnioSearch" asp-for="@Model.AnioSearch">
+                            <option value="" disabled selected>Año</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                        </select>
+
+                        <select id="MesId" name="MesSearch" asp-for="@Model.MesSearch">
+                            <option value="" disabled selected>Mes</option>
+                            <option value="01">Enero</option>
+                            <option value="02">Febrero</option>
+                            <option value="03">Marzo</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Mayo</option>
+                            <option value="06">Junio</option>
+                            <option value="07">Julio</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+
+                        <select id="AsignacionId" name="AsignacionSearch" asp-for="@Model.AsignacionSearch">
+                            <option value="" disabled selected>Eventos</option>
+                            <option value="Creados">Creados</option>
+                            <option value="Responsable">Responsable</option>
+                            <option value="Todos">Todos</option>
+                        </select>
+
+
+                        <select id="NoConformidadId" name="AplicaRCASearch" asp-for="@Model.AplicaRCASearch">
+                            <option value="" disabled selected>No Conformidad</option>
+                            <option value="Aceptada">Aceptada</option>
+                            <option value="Rechazada">Rechazada</option>
+                            <option value="Todos">Todos</option>
+                        </select>
+
+                
+                        <input type="submit" value="Filtrar" class="" />
+                        @if (User.IsInRole("Admins") || User.IsInRole("Calidad"))
+                        {
+                            @*<a asp-action="DownloadExcel" asp-controller="Home"><i class="fa fa-sign-out fa-fw"></i>Descargar Excel</a>*@
+
+                            <a asp-action="DownloadExcel"
+                               asp-controller="Home"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-page="@(Model.probando.PageIndex - 1)"
+                               asp-route-SearchString="@Model.search"
+                               asp-route-searchIntHoras="@Model.HorasSearch"
+                               asp-route-searchIntDias="@Model.DiasSearch"
+                               asp-route-TipoEventoSearch="@Model.TipoEventoSearch"
+                               asp-route-EstadoSearch="@Model.EstadoSearch"
+                               asp-route-AsignacionSearch="@Model.AsignacionSearch"
+                               asp-route-AplicaRCASearch="@Model.AplicaRCASearch"
+                               asp-route-AnioSearch="@Model.AnioSearch"
+                               asp-route-MesSearch="@Model.MesSearch"
+                               asp-route-optradio="@Model.optradio">
+                                Descargar Excel
+                            </a>
+                        }
+
+             </p>
+            </div>
+            </form>
+
+
+            <div class="container">
+
+                <div class="form-inline">
+                    <div class="table-responsive ">
+                        @if (@Model.probando.Count() > 0)
+                        {
+
+                            @if (Model.search != null)
+                            {
+                                <h4>Buscar: @Model.search</h4>
+
+                            }
+                            @*<table class="table table-bordered table-hover">*@
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["IdSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Id</a>
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["TipoEventoSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Tipo Evento</a>
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["EstadoSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Estado</a>
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Fecha Creación</a>
+                                        </th>
+                                
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Días</a>
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["ClienteSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Cliente</a>
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["EquipoSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Equipo</a>
+
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["ModeloSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Modelo</a>
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["ComponenteSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Componente</a>
+
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["HorasComponenteSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Horas</a>
+
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["ParteSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Parte</a>
+
+                                        </th>
+                                        <th>
+                                            <a asp-action="IndiceEventos" asp-route-sortOrder="@ViewData["DescripcionSortParm"]" asp-route-searchString="@Model.search" asp-route-searchIntDias="@Model.DiasSearch" asp-route-searchIntHoras="@Model.HorasSearch" asp-route-TipoEventoSearch="@Model.TipoEventoSearch" asp-route-EstadoSearch="@Model.EstadoSearch" asp-route-AnioSearch="@Model.AnioSearch" asp-route-MesSearch="@Model.MesSearch" asp-route-AsignacionSearch="@Model.AsignacionSearch" asp-route-AplicaRCASearch="@Model.AplicaRCASearch">Descripcion</a>
+                                        </th>
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.probando)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Id)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => @Model.TipoEvento.FirstOrDefault(c => c.Id == item.TipoEvento).Tipo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.ListEstado.FirstOrDefault(c => c.Id == item.Estado).Nombre)
+                                            </td>
+                                            <td>
+                                                @{ 
+                                                    DateTime? tiempo = item.FechaRegistro;
+                                                    string sqlFormattedDate = tiempo.HasValue
+                                                    ? tiempo.Value.ToString("dd-MM-yyyy")
+                                                    : "<not available>";
+                                                }
+                                                @Html.DisplayFor(modelItem => sqlFormattedDate)
+                                            </td>
+
+                                            <td>
+                                                @{
+                                                    resta = (Model.FechaActual - item.FechaRegistro);
+                                                }
+                                             @Html.DisplayFor(modelItem=>@resta.Value.Days)
+                                            </td>
+                                            @if (item.Cliente != null)
+                                             {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => @Model.Cliente.FirstOrDefault(c => c.Id == item.Cliente).Nombre)
+                                                </td>
+
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+
+                                            }
+                                            @if (item.Equipo != null)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => @Model.Equipo.FirstOrDefault(c => c.Id == item.Equipo).Nombre)
+                                                </td>
+
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+
+                                            }
+                                            @if (item.Modelo != null)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => @Model.Modelo.FirstOrDefault(c => c.Id == item.Modelo).Nombre)
+                                                </td>
+
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+
+                                            }
+                                            @if (item.Componente != null)
+                                           {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => @Model.Componente.FirstOrDefault(c => c.Id == item.Componente).Nombre)
+                                                </td>
+
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+
+                                            }
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.HorasComponente)
+                                            </td>
+
+                                            @if (item.Parte != null)
+                                            {
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => @Model.Parte.FirstOrDefault(c => c.Id == item.Parte).Nombre)
+                                                </td>
+
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+
+                                            }
+
+
+                                          
+
+                                            <td><textarea asp-for="@item.Descripcion" readonly="readonly"> </textarea></td>
+
+                                            <td class="text-center">
+                                                <form asp-action="Delete" method="post" class="form-inline">
+
+                                                    <div class="form-group">
+                                                        <a asp-action="Index" asp-controller="EventoSecuencia" class="btn btn-sm btn-primary" asp-route-eventoID="@item.Id.TrimEnd()">Detalle</a>
+                                                   </div>
+
+
+                                                    @*<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#myModal">
+                                                Eliminar
+                                            </a>*@
+                                                    @if (User.IsInRole("Admins") || User.IsInRole("Calidad"))
+                                                    {
+
+                                                        <div class="form-group">
+                                                            <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="getDataAjax('@item.Id','DeleteEventoModalAjax')">
+                                                                Eliminar
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+
+                                                            }
+                                                      
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                    }
+                                    </tbody>
+                                    </table>
+                        }
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @{ 
+        var prevDisabled = !Model.probando.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.probando.HasNextPage ? "disabled" : "";
+     }
+        
+    <a asp-action="IndiceEventos"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.probando.PageIndex - 1)"
+       asp-route-SearchString="@Model.search"
+       asp-route-searchIntHoras="@Model.HorasSearch"
+       asp-route-searchIntDias="@Model.DiasSearch"
+       asp-route-TipoEventoSearch="@Model.TipoEventoSearch"
+       asp-route-EstadoSearch="@Model.EstadoSearch"
+       asp-route-AsignacionSearch="@Model.AsignacionSearch"
+       asp-route-AplicaRCASearch="@Model.AplicaRCASearch"
+       asp-route-AnioSearch="@Model.AnioSearch"
+       asp-route-MesSearch="@Model.MesSearch"
+       asp-route-optradio="@Model.optradio"
+       class="btn btn-default @prevDisabled">
+        Anterior
+    </a>
+
+
+    <a asp-action="IndiceEventos"   
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-page="@(Model.probando.PageIndex + 1)"
+       asp-route-SearchString="@Model.search"
+       asp-route-searchIntHoras="@Model.HorasSearch"
+       asp-route-searchIntDias="@Model.DiasSearch"
+       asp-route-TipoEventoSearch="@Model.TipoEventoSearch"
+       asp-route-EstadoSearch="@Model.EstadoSearch"
+       asp-route-AsignacionSearch="@Model.AsignacionSearch"
+       asp-route-AplicaRCASearch="@Model.AplicaRCASearch"
+       asp-route-AnioSearch="@Model.AnioSearch"
+       asp-route-MesSearch="@Model.MesSearch"
+       asp-route-optradio="@Model.optradio"
+       class="btn btn-default @nextDisabled">
+        Siguiente
+    </a>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Eliminar</font></h4>
+            </div>
+            <div class="modal-body">
+                <p>Se eliminaran todos los datos del evento (Archivos-Acciones Inmediatas-Analisis-Etc)</p>
+                <p>¿Esta seguro de eliminar el siguiente Evento?</p>
+                <form asp-action="EliminarEventoModal" class="form-horizontal" role="form" method="post">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">ID Evento</label>
+                        <div class="col-lg-3">
+                            <input asp-for="@Model.Evento.Id" id="IdPrueba" class="form-control" readonly="readonly" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   
+    function getDataAjax(id, action) {
+        //alert(id);
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { id },
+            success: function (response) {
+                console.log(response);
+                OnSuccess(response);
+            }
+        });
+    }
+</script>
+
+<script>
+    var items;
+    function OnSuccess(response) {
+        items = response;
+        $.each(items, function (IndiceEventos, val) {
+            $('input[id=IdPrueba]').val(val.id);
+        });
+
+    }
+
+</script>
+
+@*<script>
+    var items;
+    function eliminarEvento(action) {
+
+    }
+
+</script>*@

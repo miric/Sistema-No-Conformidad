@@ -1,0 +1,218 @@
+﻿@model CreatePersona
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>CREAR PERSONA</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+<div>
+    <div class="col-lg-10">
+        <form   asp-action="FormularioCrearPersona" class="form-horizontal" method="post">
+            <div class="text-danger" asp-validation-summary="All"></div>  
+            <div class="form-group">
+                <label asp-for="rut" class="col-lg-2 ">Rut</label>
+                <div class="col-lg-3">
+                    <input  asp-for="rut" class="form-control" placeholder="Rut" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label  asp-for="Nombre" class="col-lg-2 ">Nombre</label>
+                <div class="col-lg-3">
+                    <input asp-for="Nombre" class="form-control" placeholder="Nombre" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label  asp-for="ApellidoPaterno" class="col-lg-2 ">Apellido Paterno</label>
+                <div class="col-lg-3">
+                    <input  asp-for="ApellidoPaterno" class="form-control" placeholder="Apellido Paterno" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApellidoMaterno" class="col-lg-2 ">Apellido Materno</label>
+                <div class="col-lg-3">
+                    <input asp-for="ApellidoMaterno" class="form-control" placeholder="Apellido Materno" required />
+                </div>
+            </div>
+        
+
+            <div class="form-group">
+
+                <label asp-for="Sexo" class="col-lg-2 ">Sexo:</label>
+                <div class="col-lg-3">
+                    <select asp-for="Sexo" class="form-control">
+                        @*<option value="" disabled selected>Select your option</option>*@
+
+                        <option value="" disabled selected>Select your option</option>
+                        <option>Masculino</option>
+                        <option>Femenino</option>
+
+
+                    </select>
+                </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label asp-for="Cargo" class="col-lg-2 ">Cargo</label>
+                    <div class="col-lg-3">
+                        <input asp-for="Cargo" class="form-control" placeholder="Cargo" />
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    <label asp-for="RutSupervisor" class="col-lg-2 ">Supervisor</label>
+                    <div class="col-lg-3">
+                        <input asp-for="RutSupervisor" class="form-control" placeholder="Supervisor" />
+                    </div>
+                </div>*@
+            <div class="form-group">
+                <label class="col-lg-2 ">Nombre Supervisor:</label>
+                <div class="col-lg-3">
+                    <input class="form-control" placeholder="" readonly="readonly" id="NombreSupervisor" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 ">Rut Supervisor:</label>
+                <div class="col-lg-3">
+                    <input asp-for="@Model.RutSupervisor" class="form-control" placeholder="" required readonly="readonly" id="RutSupervisor" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.AreaUnica.Id" class="col-lg-2 ">Asociar Area:</label>
+                <div class="col-lg-3">
+                    <select id="IdArea" name="IdArea" class="form-control" asp-for="@Model.AreaUnica.Id" asp-items='@(new SelectList(@Model.ListaAreas,"Id","Nombre"))'>
+
+                        <option value="" disabled selected>Select your option</option>
+                    </select>
+
+
+                </div>
+            </div>
+
+
+
+        
+          
+            <div class="form-group">
+                <label asp-for="@Model.SubAreaUnica.Id" class="col-lg-2 ">Asociar SubArea:</label>
+                <div class="col-lg-3">
+                    <select id="IdSubArea" name="idSubArea" class="form-control" asp-for="@Model.SubAreaUnica.Id" asp-items='@(new SelectList(String.Empty,"Id","Nombre"))'>
+                        <option value="" disabled selected>Selecciona Area Primero</option>
+
+                    </select>
+                </div>
+            </div>
+
+
+                @*<div class="text-danger" asp-validation-summary="All"></div>*@
+
+                <button type="submit" class="btn btn-primary">Crear</button>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#myModalBuscar">Supervisor</a>
+                <a asp-action="CuentasPersonas" class="btn btn-default">Cancelar</a>
+</form>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="modal fade" id="myModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Asignar Supervisor</font></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Nombre Persona</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" id="NombrePersonaInvolucrado" placeholder="Nombre Persona">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"></label>
+                        <div class="col-lg-8">
+                            <a class="btn btn-primary btn-sm" onclick="getPersonaAjax('getPersonaModalAjax')">
+                                Buscar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="tablaResponsable"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+        $(function () {
+            $("#IdArea").change(function () {
+                var url = '@Url.Content("~/")' + "Home/getAreaId";
+                var ddlsource = "#IdArea";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la SubArea</option > "';
+                    $("#IdSubArea").empty();                   
+                    $.each(data, function (i, row) {                       
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdSubArea").html(items);
+                })
+            });
+        });
+</script>
+<script>
+        function getPersonaAjax(action) {
+            var valor = document.getElementById("NombrePersonaInvolucrado").value;
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { valor },
+                success: function (response) {
+                    console.log(response);
+                    OnSuccess2(response);
+                }
+            });
+        }
+</script>
+<script>
+        var items;
+        function OnSuccess2(response) {
+            items = response;
+            if (response.length == 0) {
+                alert("No hay personas con ese nombre");
+            }
+            else {
+                var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+                $.each(items, function (i, row) {
+                    datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='AsignarSupervisor(" + '"' + row.rut + '"' + ',' + '"' + row.nombre + '"' + ")' class='btn btn-primary btn-sm'>Asignar</a>" + "</td></tr>"
+                });
+                datos += "</tbody></thead>";
+                $('#tablaResponsable').html(datos)
+            }
+        }
+</script>
+<script>
+        function AsignarSupervisor(rut, nombre) {
+            var action = "AsignarResponsableModal";
+            $('input[id=NombreSupervisor]').val(nombre);
+            $('input[id=RutSupervisor]').val(rut);
+        }
+</script>

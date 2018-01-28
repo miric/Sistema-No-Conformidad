@@ -1,0 +1,66 @@
+﻿@model ListaCliente
+@{
+    int idCliente = 0;
+    if (Model.ClienteUnico.Id != 0)
+    {
+        idCliente = Model.ClienteUnico.Id;
+    }
+
+
+    string nombre = null;
+    if (Model.ClienteUnico.Nombre != null)
+    {
+        nombre = Model.ClienteUnico.Nombre.TrimEnd();
+
+    }
+
+    //string rutjefe = null;
+    //if (Model.RutJefe != null)
+    //{
+    //    rutjefe = Model.RutJefe.TrimEnd();
+
+    //}
+}
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR CLIENTE</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<form asp-action="FormularioEditCliente" class="form-horizontal" method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="form-group">
+        <label asp-for="@Model.ClienteUnico.Id" class="col-lg-1 control-label">ID</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.ClienteUnico.Id" class="form-control" id="wolabel" value="@Model.ClienteUnico.Id"
+                   placeholder="" readonly="readonly">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="@Model.ClienteUnico.Nombre" class="col-lg-1 control-label">Nombre</label>
+        <div class="col-lg-3">
+            <input asp-for="nombre" class="form-control" id="wolabel" value="@nombre"
+                   placeholder="">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-lg-offset-1 col-lg-10">
+            <button type="submit" class="btn btn-warning">Editar</button>
+            <a asp-action="IndiceCliente" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
+   
+
+
+</form>

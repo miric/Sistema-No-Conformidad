@@ -1,0 +1,391 @@
+﻿@model AddEvento
+
+@{ 
+    ViewBag.Title = "DateTime Picker Demo";
+
+}
+
+@{
+
+    string SerieEquipo = null;
+    if (Model.EventoUnico.SerieEquipo != null)
+    {
+        SerieEquipo = Model.EventoUnico.SerieEquipo.TrimEnd();
+
+    }
+
+    string WorkOrderAnterior = null;
+    if (Model.EventoUnico.Woanterior != null)
+    {
+        WorkOrderAnterior = Model.EventoUnico.Woanterior.TrimEnd();
+
+    }
+
+    string WorkOrderNueva = null;
+    if (Model.EventoUnico.WorkOrder != null)
+    {
+        WorkOrderNueva = Model.EventoUnico.WorkOrder.TrimEnd();
+
+    }
+
+    string SerieComponente = null;
+    if (Model.EventoUnico.SerieComponente != null)
+    {
+        SerieComponente = Model.EventoUnico.SerieComponente.TrimEnd();
+
+    }
+
+    string DescripcionTrim = null;
+    if (Model.EventoUnico.Descripcion != null)
+    {
+        DescripcionTrim= Model.EventoUnico.Descripcion.TrimEnd();
+
+    }
+
+    string NumeroParteComponenteTrim = null;
+    if (Model.EventoUnico.NumeroParteComponente != null)
+    {
+        NumeroParteComponenteTrim = Model.EventoUnico.NumeroParteComponente.TrimEnd();
+
+    }
+
+    int? ProbabilidadTrim = null;
+    if (Model.EventoUnico.Probabilidad != null)
+    {
+        ProbabilidadTrim = Model.EventoUnico.Probabilidad;
+
+    }
+
+    int? ConsecuenciaTrim = null;
+    if (Model.EventoUnico.Consecuencia != null)
+    {
+        ConsecuenciaTrim = Model.EventoUnico.Consecuencia;
+
+    }
+}
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR EVENTO</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<form asp-action="FormularioEditEvento" class="form-horizontal" enctype="multipart/form-data" role="form" method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>    
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Id" class="col-lg-1">Id Evento</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.EventoUnico.Id" class="form-control"
+                   placeholder="Id Evento" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.TipoEvento" class="col-lg-1">Tipo Evento</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.EventoUnico.TipoEvento" class="form-control" id="sel1" required>
+                <option value="" disabled selected>Select your option</option>
+                @foreach (var kvp in Model.TipoEvento)
+                {
+                    <option value="@kvp.Id">@kvp.Tipo</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        @Html.Label("Fecha Identificación", null, new { @class = " col-lg-1" })
+        <div class="col-lg-3">
+            <input class="form-control" name="FechaIdentificacion" asp-for="@Model.EventoUnico.FechaIdentificacion" type="date"  />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WorkOrderAnterior" class="col-lg-1">Work Order Anterior</label>
+        <div class="col-lg-3">
+            <input asp-for="WorkOrderAnterior" class="form-control" placeholder="Work Order Anterior" value="@WorkOrderAnterior" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WorkOrderNueva" class="col-lg-1">Work Order Nueva</label>
+        <div class="col-lg-3">
+            <input asp-for="WorkOrderNueva" class="form-control" placeholder="Work Order"  value="@WorkOrderNueva"/>
+        </div>
+    </div>
+    @*---------------------------------Borrar esto--------------------------------------------------------*@
+
+
+    @*-------------------------------------------------------------------------------------------------------------------------*@
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Cliente" class="col-lg-1">Cliente</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.EventoUnico.Cliente" class="form-control" id="sel2" name="ClienteId">
+                <option value="" disabled selected>Select your option</option>
+                @foreach (var kvp in Model.Cliente)
+                {
+                    <option value="@kvp.Id">@kvp.Nombre</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    @*-------------------------------------------------------------------------------------------------------------------------*@
+
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.SerieEquipo" class="col-lg-1">Serie Equipo</label>
+        <div class="col-lg-3">
+            <input asp-for="SerieEquipo" class="form-control" id="SerieEquipo" value="@SerieEquipo"
+                   placeholder="SerieEquipo">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Equipo" class="col-lg-1">Equipo</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.EventoUnico.Equipo" class="form-control" id="IdEquipo" name="EquipoId">
+                <option value="" disabled selected>Select your option</option>
+                @foreach (var kvp in Model.equipo)
+                {
+                    <option value="@kvp.Id">@kvp.Nombre</option>
+                }
+
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Modelo" class="col-lg-1">Modelo</label>
+        <div class="col-lg-3">
+            @if (Model.EventoUnico.Modelo == null)
+            {
+                <select  class="form-control" id="IdModelo" name="ModeloId">
+                    <option value="" disabled selected>Select your option</option>
+                    @foreach (var kvp in Model.modelo.Where(c => c.IdEquipo == Model.EventoUnico.Equipo))
+                    {
+                        <option value="@kvp.Id">@kvp.Nombre</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <select asp-for="@Model.EventoUnico.Modelo" class="form-control" id="IdModelo" name="ModeloId">
+                    <option value="" disabled selected>Select your option</option>
+                    @foreach (var kvp in Model.modelo.Where(c => c.IdEquipo == Model.EventoUnico.Equipo))
+                    {
+                        <option value="@kvp.Id">@kvp.Nombre</option>
+                    }
+                </select>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Componente" class="col-lg-1">Componente</label>
+        <div class="col-lg-3">
+            <select id="IdComponente" name="ComponenteId" class="form-control" asp-for="@Model.EventoUnico.Componente" asp-items='@(new SelectList(Model.componenteJOINmodelo, "Id", "Nombre"))'>
+                <option value="" disabled selected>Selecciona el Componente</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.SerieComponente" class="col-lg-1">Serie Componente</label>
+        <div class="col-lg-3">
+            <input asp-for="SerieComponente" class="form-control" id="SerieComponente" value="@SerieComponente"
+                   placeholder="Serie Componente">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.HorasComponente" class="col-lg-1">Horas Componente</label>
+        <div class="col-lg-3">
+            <input asp-for="HorasComponente" value="@Model.EventoUnico.HorasComponente"  class="form-control" id="HorasComponente"
+                   placeholder="Horas Componente">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Parte" class="col-lg-1">Parte</label>
+        <div class="col-lg-3">
+            <select id="IdParte" name="ParteId" class="form-control" asp-for="@Model.EventoUnico.Parte" asp-items='@(new SelectList(Model.componenteJOINparte, "Id", "Nombre"))'>
+                <option value="" disabled selected>Selecciona la Parte</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NumeroParteComponente" class="col-lg-1">Numero Parte Componente</label>
+        <div class="col-lg-3">
+            <input asp-for="NumeroParteComponente" class="form-control" id="NumeroParteComponente" value="@NumeroParteComponenteTrim" placeholder="Numero Parte Componente">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.AreaUnica.Id" class="col-lg-1">Area:</label>
+        <div class="col-lg-3">
+            <select id="IdArea" name="IdArea" class="form-control" asp-for="@Model.EventoUnico.Area" asp-items='@(new SelectList(@Model.ListaAreas,"Id","Nombre"))'>
+                <option value="" disabled selected>Select your option</option>
+            </select>
+
+        </div>
+    </div>
+
+    @if (Model.EventoUnico.Area == null)
+    {
+        <div class="form-group">
+            <label asp-for="@Model.SubAreaUnica.Id" class="col-lg-1">SubArea:</label>
+            <div class="col-lg-3">
+                <select id="IdSubArea" name="idSubArea" class="form-control" asp-for="@Model.EventoUnico.SubArea" asp-items='@(new SelectList(String.Empty,"Id","Nombre"))'>
+                    <option value="" disabled selected>Selecciona Area Primero</option>
+                </select>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <label asp-for="@Model.SubAreaUnica.Id" class="col-lg-1">SubArea:</label>
+            <div class="col-lg-3">
+                <select asp-for="@Model.EventoUnico.SubArea" class="form-control" id="IdSubArea" name="IdSubArea">
+                    <option value="" disabled selected>Select your option</option>
+                    @foreach (var kvp in Model.ListaSubAreas.Where(c => c.IdArea == Model.EventoUnico.Area))
+                    {
+                        <option value="@kvp.Id">@kvp.Nombre</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+
+
+    }
+
+    <div class="form-group">
+        <label class="col-lg-1">Probabilidad</label>
+        <div class="col-lg-3">
+            <input asp-for="Probabilidad" class="form-control" id="IdProbabilidad"
+                   placeholder="Probabilidad" value="@ProbabilidadTrim">
+        </div>  
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-1">Consecuencia</label>
+        <div class="col-lg-3">
+            <input asp-for="Consecuencia" class="form-control" id="IdConsecuencia"  value="@ProbabilidadTrim" placeholder="Consecuencia">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Descripcion" class="col-lg-1">Descripción</label>
+        <div class="col-lg-5">
+            <textarea asp-for="@DescripcionTrim" name="Descripcion" class="form-control" id="textarea" 
+                      placeholder="Descripcion"> </textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-1">Archivos</label>
+        <div class="col-lg-5">
+            <p>Se puede seleccionar uno o mas archivos</p>
+            <input type="file" name="files" multiple />
+        </div>
+    </div>
+  
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="form-group">
+        <div class="col-lg-1">
+            <button type="submit" class="btn btn-warning control-label">Editar Evento</button>
+            <a asp-action="Index"  asp-controller="EventoSecuencia" class="btn btn-sm btn-default control-label" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cancelar</a>
+        </div>
+    </div>
+</form>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+        $(function () {
+            $("#IdEquipo").change(function () {
+                var url = '@Url.Content("~/")' + "Home/getModeloId";
+                var ddlsource = "#IdEquipo";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Modelo</option > "';
+                    //var items = "";
+                    $("#IdModelo").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdModelo").html(items);
+                })
+            });
+        });
+
+
+</script>
+<script>
+        $(function () {
+            $("#IdModelo").change(function () {   
+                var url = '@Url.Content("~/")' + "Home/getComponenteId";
+                var ddlsource = "#IdModelo";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Componente</option > "';
+                    //var items = "";
+                    $("#IdComponente").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdComponente").html(items);
+                })
+            });
+        });
+</script>
+
+<script>
+        $(function () {
+            $("#IdComponente").change(function () {
+                var url = '@Url.Content("~/")' + "Home/getParteId";
+                var ddlsource = "#IdComponente";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la parte</option > "';
+                    //var items = "";
+                    $("#IdParte").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdParte").html(items);
+                })
+            });
+        });
+
+</script>
+<script>
+        $(function () {
+            $("#IdArea").change(function () {
+                var url = '@Url.Content("~/")' + "Home/getAreaId";
+                var ddlsource = "#IdArea";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la SubArea</option > "';
+                    $("#IdSubArea").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdSubArea").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+
+

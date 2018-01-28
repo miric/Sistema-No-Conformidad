@@ -1,0 +1,2488 @@
+﻿@model EventoSecuenciaModels
+@{
+    int? VariableCriticidad = null;
+    int contador = 0;
+    string EventoIdTrim;
+    if (Model.EventoUnico.Id != null)
+    {
+        EventoIdTrim = Model.EventoUnico.Id.TrimEnd();
+    }
+    else
+    {
+        EventoIdTrim = null;
+    }
+    if (Model.EventoUnico.Probabilidad != null && Model.EventoUnico.Consecuencia != null)
+    {
+        VariableCriticidad = Model.EventoUnico.Probabilidad * Model.EventoUnico.Consecuencia;
+    }
+    string MinMax1 = "";
+    string MinMax2 = "";
+    string MinMax3 = "";
+    string MinMax4 = "";
+    string MinMax5 = "";
+    string MinMax6 = "";
+    string MinMax7 = "";
+    string MinMax8 = "";
+    string MinMax9 = "";
+    switch (Model.EventoUnico.Estado)
+    {
+        case 1:
+            MinMax1 = "in";
+            break;
+        case 2:
+            MinMax2 = "in";
+            break;
+        case 3:
+            MinMax3 = "in";
+            break;
+        case 4:
+            MinMax4 = "in";
+            break;
+        case 5:
+            MinMax5 = "in";
+            break;
+        case 6:
+            MinMax6 = "in";
+            break;
+        case 7:
+            MinMax7 = "in";
+            break;
+        case 8:
+            MinMax8 = "in";
+            break;
+        case 9:
+            MinMax9 = "in";
+            break;
+    }
+}
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>DETALLE EVENTO</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+<div class="panel-group" id="accordion">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#InfoEvento">
+                    <font color="white">Información Evento</font>
+                </a>
+            </h4>
+        </div>
+        <div id="InfoEvento" class="panel-collapse collapse @MinMax1">
+            <div class="panel-body">
+                <div class="row container">
+                    <div class="">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Titulo</th>
+                                        <th>Información</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Id Evento:</td>
+                                        <td>@Model.EventoUnico.Id</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tipo Evento:</td>
+                                        <td>@Model.TipoEvento</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Creador Evento:</td>                                        
+                                         <td>@Model.Creador</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Estado:</td>
+                                        <td>@Model.ListaEstado.FirstOrDefault(c => c.Id == Model.EventoUnico.Estado).Nombre</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha Creacion:</td>
+                                        <td>@Model.EventoUnico.FechaRegistro</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha Identificacion:</td>
+                                        <td>@Model.EventoUnico.FechaIdentificacion</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Work Order Anterior:</td>
+                                        <td>@Model.EventoUnico.Woanterior</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Work Order Nueva:</td>
+                                        <td>@Model.EventoUnico.WorkOrder</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cliente:</td>
+                                        <td>@Model.Cliente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Equipo:</td>
+                                        <td>@Model.Equipo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Serie Equipo:</td>
+                                        <td>@Model.EventoUnico.SerieEquipo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Modelo:</td>
+                                        <td>@Model.Modelo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Componente:</td>
+                                        <td>@Model.Componente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Serie Componente:</td>
+                                        <td>@Model.EventoUnico.SerieComponente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Horas Componente:</td>
+                                        <td>@Model.EventoUnico.HorasComponente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Parte:</td>
+                                        <td>@Model.parte</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Numero Parte Componente:</td>
+                                        <td>@Model.EventoUnico.NumeroParteComponente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Area:</td>
+                                        <td>@Model.Area</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SubArea:</td>
+                                        <td>@Model.SubArea</td>
+                                    </tr>
+                                    @if (!User.IsInRole("Cliente"))
+                                    {
+                                        <tr>
+                                            <td>Probabilidad:</td>
+                                            <td>@Model.EventoUnico.Probabilidad</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Consecuencia:</td>
+                                            <td>@Model.EventoUnico.Consecuencia</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Criticidad:</td>
+                                            <td>@VariableCriticidad</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td>Descripcion:</td>
+                                        <td><textarea asp-for="@Model.EventoUnico.Descripcion" readonly="readonly"> </textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <form asp-action="Delete" method="post">
+                            @*<a class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModalMensaje">
+                                Bitacora
+                            </a>*@
+                            @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                            {
+                                <a asp-action="FormularioEditEvento" asp-controller="Home" class="btn btn-sm  btn-warning" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Editar Evento</a>
+                            }
+                        </form>
+                        <br />
+                        @if (Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("Evento")).Count() > 0)
+                        {
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Archivos</th>
+                                        <th>Fecha Registro</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ar in Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("Evento")))
+                                    {
+                                        <tr>
+                                            <td><a style="color:dodgerblue">@ar.Nombre</a></td>
+                                            <td>@ar.FechaRegistro</td>
+                                            <td>
+                                                <form asp-action="Delete" method="post">
+                                                    <a asp-action="Download" asp-controller="EventoSecuencia" class="btn btn-sm btn-default" asp-route-Identificador="@ar.Identificador.TrimEnd()" asp-route-filename="@ar.Nombre.TrimEnd()" asp-route-Tipo="Evento">Descargar</a>
+                                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                    {
+                                                        @*<a asp-action="DeleteArchivo" asp-controller="EventoSecuencia" class="btn btn-danger btn-sm" asp-route-FileId="@ar.FileId" asp-route-EventoId="@Model.EventoUnico.Id.TrimEnd()">
+                                                            Eliminar
+                                                        </a>*@
+                                                        <a onclick="ConfirmarEliminarArchivo('@ar.FileId')" class="btn btn-sm  btn-danger">Eliminar</a>
+                                                    }
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!User.IsInRole("Cliente") && Model.EventoUnico.Estado >= 2)
+    {
+        @*------------------------------------------Acción Inmediata-------------------------------------------*@
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#AccionInmediataInfo">
+                        <font color="White">Acción Inmediata</font>
+                    </a>
+                </h4>
+            </div>
+            <div id="AccionInmediataInfo" class="panel-collapse collapse @MinMax2">
+                <div class="panel-body">
+                    <div class="row container">
+                        <div class="">
+                            @if (Model.ListaAccionesInmediatas.Count() <= 0)
+                            {
+                                <h4>No hay Acciones Inmediatas Registradas</h4>
+                            }
+                            else
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Id Accion Inmediata</th>
+                                                <th>Efectiva</th>
+                                                <th>Descripcion</th>
+                                                <th>Responsable</th>
+                                                <th>Involucrado</th>
+                                                <th>Fecha Registro</th>
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var kvp in Model.ListaAccionesInmediatas)
+                                            {
+                                                <tr>
+                                                    <td>@kvp.Id</td>
+                                                    @if (@kvp.Efectivo == false)
+                                                    {
+                                                        <td>No</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        @if (@kvp.Efectivo == true)
+                                                        {
+                                                            <td>Si</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                    }
+                                                    <td><textarea id="textarea" placeholder="Causa" asp-for="@kvp.Descripcion" readonly="readonly"> </textarea></td>
+                                                    @if (@kvp.RutPersona != null)
+                                                    {
+                                                        <td>@Model.ListaPersonasAccionInmediata.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut == @kvp.RutPersona).nombreCompleto</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                    <td><a class="btn btn-info" data-toggle="modal" data-target="#myModalBuscarInvolucradoAccionInmediata" onclick="getDataAI('@kvp.Id.TrimEnd()','EventoSecuencia/AIModalAjax')">Involucrados</a> </td>
+                                             
+                                                    <td>@kvp.FechaRegistro</td>
+                                                    <td class="text-center">
+                                                        <form asp-action="Delete" method="post">
+                                                            @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                            {
+                                                                <a asp-action="FormularioEditAccionInmediata" asp-controller="AccionInmediata" class="btn btn-sm btn-warning" asp-route-AccionInmediataID="@kvp.Id.TrimEnd()">Editar</a>
+                                                                @*<a asp-action="DeleteAccionInmediata" asp-controller="AccionInmediata" class="btn btn-danger btn-sm" asp-route-AccioninmediataID="@kvp.Id">
+                                                                    Eliminar2
+                                                                </a>*@
+                                                                <a onclick="ConfirmarEliminarAccionInmediata('@kvp.Id.TrimEnd()')" class="btn btn-sm  btn-danger">Eliminar</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.RutPersona == Model.PersonaUnica.Rut && c.IdEvento == Model.EventoUnico.Id && c.Estado == 2) != null && Model.EventoUnico.Estado == 2)
+                                                                {
+                                                                    <a asp-action="FormularioEditAccionInmediata" asp-controller="AccionInmediata" class="btn btn-sm btn-warning" asp-route-AccionInmediataID="@kvp.Id.TrimEnd()">Editar</a>
+                                                                    @*<a asp-action="DeleteAccionInmediata" asp-controller="AccionInmediata" class="btn btn-danger btn-sm" asp-route-AccioninmediataID="@kvp.Id">
+                                                                        Eliminar
+                                                                    </a>*@
+                                                                    <a onclick="ConfirmarEliminarAccionInmediata('@kvp.Id.TrimEnd()')" class="btn btn-sm  btn-danger">Eliminar</a>
+                                                                }
+                                                            }
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            <form asp-action="Delete" method="post">
+                                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="FormularioCrearAccionInmediata" asp-controller="AccionInmediata" class="btn btn-sm btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Acción Inmediata</a>
+                                    @if (Model.EventoUnico.Estado == 2)
+                                    {
+                                        @*<a asp-action="AprobarAccionInmediata" asp-controller="Home" class="btn btn-sm  btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cerrar Accion Inmediata</a>*@
+                                        <a onclick="ConfirmarCierreEtapaAI()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+                                    }
+                                }
+                                else
+                                {
+                                    @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.RutPersona == Model.PersonaUnica.Rut && c.IdEvento == Model.EventoUnico.Id && c.Estado == 2) != null && Model.EventoUnico.Estado == 2)
+                                    {
+                                        <a asp-action="IndexAccionInmediata" asp-controller="AccionInmediata" class="btn btn-sm btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Acción Inmediata</a>
+                                        @*<a asp-action="AprobarAccionInmediata" asp-controller="Home" class="btn btn-sm  btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cerrar Etapa</a>*@
+                                        <a onclick="ConfirmarCierreEtapaAI()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+
+                                    }
+                                }
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!User.IsInRole("Cliente") && Model.EventoUnico.Estado >= 3)
+    {
+        @*-------------------------------------------------Análisis--------------------------------------------------*@
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#AnalisisInfo">
+                        <font color="White">Análisis</font>
+                    </a>
+                </h4>
+            </div>
+            <div id="AnalisisInfo" class="panel-collapse collapse @MinMax3">
+                <div class="panel-body">
+                    <div class="row container">
+                        @if (Model.analisis == null)
+                        {
+                            <h4>No hay Análisis Registrado</h4>
+                            @if ((User.IsInRole("Calidad") || User.IsInRole("Admins")) && Model.EventoUnico.Estado > 2)
+                            {
+                                <form asp-action="Delete" method="post" class="">
+                                    <a asp-action="CrearFormularioAnalisis" asp-controller="Analisis" class="btn btn-sm btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Analisis</a>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <form asp-action="CrearFormularioAnalisis" asp-controller="Analisis" class="form-horizontal" role="form" method="post">
+                                <div class="form-group">
+                                    <label class="col-lg-2">¿Requiere Analisis Causa Raiz?</label>
+                                    <div class="col-lg-3">
+                                        @if (Model.analisis.AplicaRca == true)
+                                        {
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" id="opciones_1" checked disabled>
+                                                    SI
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" id="opciones_2" value="false" disabled>
+                                                    NO
+                                                </label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" id="opciones_1" disabled>
+                                                    SI
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" id="opciones_2" value="false" checked disabled>
+                                                    NO
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="@Model.analisis.FechaRegistro" class="col-lg-2 ">Fecha Registro</label>
+                                    <div class="col-lg-5">
+                                        <input type="date" asp-for="@Model.analisis.FechaRegistro" class="form-control" placeholder="Id" disabled />
+                                    </div>
+                                </div>
+                                @if (Model.analisis.Descripcion == null)
+                                {
+                                    <div class="form-group">
+                                        <label class="col-lg-2">Descripción</label>
+                                        <div class="col-lg-5">
+                                            <textarea class="form-control" id="textarea"
+                                                      placeholder="Descripción" disabled> </textarea>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <label class="col-lg-2">Descripción</label>
+                                        <div class="col-lg-5">
+                                            <textarea class="form-control" id="textarea"
+                                                      placeholder="Descripción" readonly="readonly" asp-for="@Model.analisis.Descripcion"> </textarea>
+                                        </div>
+                                    </div>
+                                }
+                                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="EditFormularioAnalisis" asp-controller="Analisis" class="btn btn-warning" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-AnalisisID="@Model.analisis.Id.TrimEnd()">Editar Analisis</a>
+                                }
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*-------------------------------------Análisis Causa Raíz---------------------------------*@
+    if (@Model.analisis != null)
+    {
+        if (Model.analisis.AplicaRca == true && Model.EventoUnico.Estado >= 4)
+        {
+            <div class="panel panel-aqua">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#AnalisisCausaRaizInfo">
+                            <font color="White">Análisis Causa Raíz (RCA)</font>
+                        </a>
+                    </h4>
+                </div>
+                <div id="AnalisisCausaRaizInfo" class="panel-collapse collapse @MinMax4">
+                    <div class="panel-body">
+                        @if (Model.RCA != null)
+                        {
+                            <form asp-action="FormularioCrearCausa" asp-contrller="AnalisisCausaRaiz" enctype="multipart/form-data" class="form-horizontal" role="form" method="post">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse">
+                                                            Datos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="Datos" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <label @*asp-for="@Model.EventoId" *@ class="col-lg-4">Id</label>
+                                                            <div class="col-lg-7">
+                                                                <input asp-for="@Model.RCA.Id" class="form-control" id="wolabel"
+                                                                       placeholder="Id Analisis" readonly="readonly">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            @Html.Label("Fecha Registro", null, new { @class = " col-lg-4" })
+                                                            <div class="col-lg-7">
+                                                                <input class="form-control" name="FechaRegistro" asp-for="@Model.RCA.FechaRegistro" type="date" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Creador RCA</label>
+                                                            <div class="col-lg-7">
+                                                                <input asp-for="@Model.CreadorRCA" class="form-control" id="SerieComponente"
+                                                                       placeholder="" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">¿Se Acepta No Conformidad?</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.EventoUnico.Ncaceptada" class="form-control" id="sel2" disabled>
+                                                                    <option value="" disabled selected>Selecciona tu opción</option>
+                                                                    <option value="true">Si</option>
+                                                                    <option value="false">No</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Origen Falla</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.OrigenFalla" class="form-control" id="sel2" disabled>
+                                                                    <option value="" disabled selected>Selecciona tu opción</option>
+                                                                    @foreach (var kvp in Model.ListaOrigenFalla)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Falla Primaria</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.FallaPrimaria" class="form-control" id="sel2" disabled>
+                                                                    <option value="" disabled selected>Selecciona tu opción</option>
+                                                                    @foreach (var kvp in Model.ListaFallaPrimaria)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Falla Secundaria</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.FallaSecundaria" class="form-control" id="sel2" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaFallaSecundaria)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Costos</label>
+                                                            <div class="col-lg-7">
+                                                                <input asp-for="@Model.RCA.Costo" class="form-control" id="SerieComponente"
+                                                                       placeholder="" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Causa</label>
+                                                            <div class="col-lg-7">
+                                                                <textarea asp-for="@Model.RCA.Descripcion" class="form-control" id="textarea" name="Causa"
+                                                                          placeholder="Causa" disabled> </textarea>
+                                                            </div>
+                                                        </div>
+                                                        @if (Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("AnalisisCausaRaiz")).Count() > 0)
+                                                        {
+                                                            <table class="table table-bordered table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Archivos</th>
+                                                                        <th>Fecha Registro</th>
+                                                                        <th>Accion</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var ar in Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd() == "AnalisisCausaRaiz"))
+                                                                    {
+                                                                        <tr>
+                                                                            <td><a style="color:dodgerblue">@ar.Nombre</a></td>
+                                                                            <td>@ar.FechaRegistro</td>
+                                                                            <td>
+                                                                                <a asp-action="DownloadRCAFile" asp-controller="AnalisisCausaRaiz" class="btn btn-sm btn-default" asp-route-Identificador="@ar.Identificador.TrimEnd()" asp-route-filename="@ar.Nombre.TrimEnd()" asp-route-Tipo="Evento" asp-route-IdRCA="@Model.RCA.Id.TrimEnd()">Descargar</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*-------------------------------Levels--------------------------*@
+                                    <div class="col-md-6">
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse">
+                                                            Mapa Causa Raiz
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="Levels" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Causal 1</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausa1" class="form-control" id="Causa1" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausa1)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="@Model.Causa2" class="col-lg-4">Causal 2</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausa2" class="form-control" id="Causa2" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausa2)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="@Model.Causa3" class="col-lg-4">Causal 3</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausa3" class="form-control" id="Causa3" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausa3)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="@Model.Causa4" class="col-lg-4">Causal 4</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausa4" class="form-control" id="Causa4" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausa4)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="@Model.Causa5" class="col-lg-4">Causal 5</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausa5" class="form-control" id="Causa5" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausa5)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Causa Intermedia 1</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausaIntermedia1" class="form-control" id="CausaIntermedia1" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausaIntermedia1)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Causa Intermedia 2</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdCausaIntermedia2" class="form-control" id="CausaIntermedia2" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaCausaIntermedia2)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        @*---------------------------------Procesos-----------------------------------*@
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse">
+                                                            Procesos
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="Proceso" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Proceso 1</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdProceso1" class="form-control" id="Proceso1" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaProceso1)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Proceso 2</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdProceso2" class="form-control" id="Proceso1" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaProceso2)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Proceso 3</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdProceso3" class="form-control" id="Proceso1" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaProceso3)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Proceso 4</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdProceso4" class="form-control" id="Proceso4" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaProceso4)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4">Proceso 5</label>
+                                                            <div class="col-lg-7">
+                                                                <select asp-for="@Model.RCA.IdProceso1" class="form-control" id="Proceso5" disabled>
+                                                                    <option value="" disabled selected></option>
+                                                                    @foreach (var kvp in Model.ListaProceso5)
+                                                                    {
+                                                                        <option value="@kvp.Id">@kvp.Nombre</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*------------------------------------Archivos--------------------------------------*@
+                                    <div class="col-md-6 col-sm-6">
+                                    </div>
+                                </div>
+                                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="FormularioEditCausa" asp-controller="AnalisisCausaRaiz" class="btn btn-warning" asp-route-IdCausa="@Model.RCA.Id.TrimEnd()" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()">Editar Causa</a>
+                                    <a onclick="ConfirmarEliminarAnalisisCausaRaiz('@Model.RCA.Id.TrimEnd()')" class="btn btn-danger">Eliminar RCA</a>
+                                    @*<a class="btn btn-danger" data-toggle="modal" data-target="#myModalEliminarCausa" onclick="getDataAjaxCausa('@Model.RCA.Id','AnalisisCausaRaiz/DeleteCausaModalAjax')">
+                                        Eliminar Causa
+                                    </a>*@
+                                }
+                                else
+                                {
+                                    if (@Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd().Equals(Model.PersonaUnica.Rut.TrimEnd())) != null && Model.EventoUnico.Estado == 4)
+                                    {
+                                        <a asp-action="FormularioEditCausa" asp-controller="AnalisisCausaRaiz" class="btn btn-warning" asp-route-IdCausa="@Model.RCA.Id.TrimEnd()" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()">Editar Causa</a>
+                                        <a onclick="ConfirmarEliminarAnalisisCausaRaiz('@Model.RCA.Id.TrimEnd()')" class="btn btn-danger">Eliminar RCA</a>
+
+                                    }
+                                }
+                                <a class="btn btn-default" data-toggle="modal" data-target="#myModalBuscarResposableEtapas">Responsable Registro</a>        
+                            </form>
+                                 
+                        }
+                        else
+                        {
+                            <h4>No hay Análisis Causa Raíz Registrado</h4>
+                            @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                            {
+                                <form class="form-inline" asp-action="Delete" method="post">
+                                    <div class="form-group">
+                                        <a asp-action="FormularioCrearCausa" asp-controller="AnalisisCausaRaiz" class="btn btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar RCA</a>
+                                        <a class="btn btn-default" data-toggle="modal" data-target="#myModalBuscarResposableEtapas">Responsable Registro</a>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.RutPersona == Model.PersonaUnica.Rut && c.IdEvento == Model.EventoUnico.Id && c.Estado == 4) != null && Model.EventoUnico.Estado == 4)
+                                {
+                                    <form class="form-inline" asp-action="Delete" method="post">
+                                        <div class="form-group">
+                                            <a asp-action="FormularioCrearCausa" asp-controller="AnalisisCausaRaiz" class="btn btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar RCA</a>
+                                            <a class="btn btn-default" data-toggle="modal" data-target="#myModalBuscarResposableEtapas">Responsable Registro</a>
+                                        </div>
+                                    </form>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+     @*---------------------------------------------------Involucrados-----------------------------------------*@
+    if (Model.analisis.AplicaRca == true && Model.EventoUnico.Estado >= 5)
+    {
+        <div class="panel panel-aqua">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#InvolucradosInfo">
+                        <font color="White">Involucrados</font>
+                    </a>
+                </h4>
+            </div>
+            <div id="InvolucradosInfo" class="panel-collapse collapse @MinMax5">
+                <div class="panel-body">
+                    @*-------------Agregando Responsable/Supervisor-------*@
+                    @if (Model.EventoUnico.RutJefeInvolucrado != null)
+                    {
+                        <form asp-action="AgregarInvolucrado" asp-controller="AnalisisCausaRaiz" class="form-horizontal" method="post">
+                            <div class="form-group" hidden>
+                                <label asp-for="@Model.EventoUnico.Id" class="col-lg-3 ">Id Evento</label>
+                                <div class="col-lg-5">
+                                    <input asp-for="@Model.EventoUnico.Id" value="@EventoIdTrim" class="form-control" placeholder="User Name" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3">Responsable Involucrados [Supervisor/Jefe]</label>
+                                <div class="col-lg-5">
+                                    <input asp-for="@Model.ResponsableInvolucradoNombre" class="form-control" id="SerieComponente"
+                                           placeholder="" disabled>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    @if (Model.ListaPersonaEventoInvolucrado.Where(c => c.IdEvento.Equals(Model.EventoUnico.Id) && !c.Removed == true).Count() > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th>Involucrado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var kvp in Model.ListaPersonaEventoInvolucrado.Where(c => !c.Removed == true))
+                                    {
+                                        <tr>
+                                            <td>@Model.ListaPersonasInvolucrados.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut.Equals(@kvp.RutPersona)).nombreCompleto</td>
+                                            <td>
+                                                <form asp-action="Delete" method="post">
+                                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                    {
+                                                        @*<a asp-action="DeleteInvolucrado" asp-controller="AnalisisCausaRaiz" class="btn btn-danger btn-sm" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-InvolucradoRut="@kvp.RutPersona.TrimEnd()">
+                                                            Eliminar
+                                                        </a>*@
+                                                        <a onclick="ConfirmarEliminarInvolucrado('@kvp.RutPersona.TrimEnd()')" class="btn btn-danger">Eliminar</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (@Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd().Equals(Model.PersonaUnica.Rut.TrimEnd()) && c.Estado == 5) != null && Model.EventoUnico.Estado == 5)
+                                                        {
+                                                            @*<a asp-action="DeleteInvolucrado" asp-controller="AnalisisCausaRaiz" class="btn btn-danger btn-sm" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-InvolucradoRut="@kvp.RutPersona.TrimEnd()">
+                                                                Eliminar
+                                                            </a>*@
+                                                            <a onclick="ConfirmarEliminarInvolucrado('@kvp.RutPersona.TrimEnd()')" class="btn btn-danger">Eliminar</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-danger btn-sm" disabled>
+                                                                Eliminar
+                                                            </a>
+                                                        }
+                                                    }
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <h4>No hay Involucrados Registrados</h4>
+
+                    }      
+                    @*-------------Botones de asignacion-------*@
+                    @if ((User.IsInRole("Calidad") || User.IsInRole("Admins")))
+                    {
+                        <form asp-action="AgregarInvolucrado" asp-controller="AnalisisCausaRaiz" class="form-horizontal" method="post">
+                            <div class="form-group" hidden>
+                                <label asp-for="@Model.EventoUnico.Id" class="col-lg-3 ">Id Evento</label>
+                                <div class="col-lg-5">
+                                    <input asp-for="@Model.EventoUnico.Id" value="@EventoIdTrim" class="form-control" placeholder="User Name" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModalBuscar">Asignar Involucrado</a>
+                                    <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModalBuscarResponsable">Asignar Responsable Involucrado [Supervisor/Jefe]</a>
+                                    @if (Model.EventoUnico.Estado == 5)
+                                    {
+                                        @*<a asp-action="AprobarRegistroInvolucrados" asp-controller="Home" class="btn btn-sm  btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cerrar Etapa</a>*@
+                                        <a onclick="ConfirmarCierreEtapaInvolucrados()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+                                    }
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd() == @Model.PersonaUnica.Rut.TrimEnd() && c.Estado == 5) != null && Model.EventoUnico.Estado == 5)
+                        {
+                            <form asp-action="AgregarInvolucrado" asp-controller="AnalisisCausaRaiz" class="form-horizontal" method="post">
+                                <div class="form-group" hidden>
+                                    <label asp-for="@Model.EventoUnico.Id" class="col-lg-3 ">Id Evento</label>
+                                    <div class="col-lg-5">
+                                        <input asp-for="@Model.EventoUnico.Id" value="@EventoIdTrim" class="form-control" placeholder="User Name" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModalBuscar">Asignar Involucrado</a>
+                                        <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModalBuscarResponsable">Asignar Responsable Involucrado [Supervisor/Jefe]</a>
+                                        @if (Model.EventoUnico.Estado == 5)
+                                    {
+                                            @*<a asp-action="AprobarRegistroInvolucrados" asp-controller="Home" class="btn btn-sm  btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cerrar Etapa</a>*@
+                                            <a onclick="ConfirmarCierreEtapaInvolucrados()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+                                        }
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    //---------------------------------Acciones Correctivas-------------------------------------------
+    @if (Model.EventoUnico.Ncaceptada != null)
+    {
+        @if (Model.EventoUnico.Ncaceptada == true && Model.EventoUnico.Estado >= 6)
+        {
+            <div class="panel panel-aqua">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#AccionesCorrectivasInfo">
+                            <font color="White">Acción Correctiva</font>
+                        </a>
+                    </h4>
+                </div>
+                <div id="AccionesCorrectivasInfo" class="panel-collapse collapse @MinMax6">
+                    <div class="panel-body">
+                        <div class="row container">
+                            <div class="">
+                                @if (Model.ListaAccionCorrectiva.Where(c => !c.Removed == true).Count() <= 0)
+                                {
+                                    <h4>No hay Acciones Correctivas Registradas</h4>
+                                }
+                                else
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>N°</th>
+                                                    <th>Estado</th>
+                                                    <th>Causa</th>
+                                                    <th>Acción Correctiva</th>
+                                                    <th>Responsable Registro</th>
+                                                    <th>Fecha Limite</th>
+                                                    <th>Fecha Ejecución</th>
+                                                    <th>Accion</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var kvp in Model.ListaAccionCorrectiva.Where(c => !c.Removed == true))
+                                                {
+                                                    contador = contador + 1;
+                                                    <tr>
+                                                        <td>@contador</td>
+                                                        @if (@kvp.Estado.TrimEnd().Equals("Pendiente"))
+                                                        {
+                                                            <td><p style="color:red;">@kvp.Estado</p></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@kvp.Estado</td>
+                                                        }
+                                                        <td><textarea asp-for="@kvp.Causa" readonly="readonly"> </textarea></td>
+                                                        <td><textarea asp-for="@kvp.AccionCorrectiva1" readonly="readonly"> </textarea></td>
+                                                        @if (@kvp.RutPersona != null)
+                                                        {
+                                                            <td>@Model.ListaPersonasAccionCorrectiva.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut == @kvp.RutPersona).nombreCompleto</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                        <td>@kvp.FechaLimite</td>
+                                                        <td>@kvp.FechaEjecucion</td>
+                                                        @if (@kvp.Efectivo != null)
+                                                        {
+                                                            @if (@kvp.Efectivo == false)
+                                                            {
+                                                                <td>No</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                @if (@kvp.Efectivo == true)
+                                                                {
+                                                                    <td>Si</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+                                                            }
+                                                        }
+                                                        <td class="text-center">
+                                                            <form class="form-horizontal" asp-action="Delete" method="post">
+                                                                <a asp-action="FormularioDetalleAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-primary" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-AccionCorrectivaID="@kvp.Id.TrimEnd()">Detalle</a>
+                                                                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                                {
+                                                                    <a asp-action="FormularioEditAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-warning" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-AccionCorrectivaID="@kvp.Id.TrimEnd()">Editar</a>
+                                                                    @if (Model.EventoUnico.Estado == 6)
+                                                                    {
+                                                                        <a asp-action="FormularioCerrarAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-info" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-AccionCorrectivaID="@kvp.Id.TrimEnd()">Cerrar</a>
+                                                                        
+                                                                    }
+                                                                    @*<a asp-action="DeleteAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-danger btn-sm" asp-route-AccionCorrectivaID="@kvp.Id">
+                                                                        Eliminar
+                                                                    </a>*@
+                                                                    <a onclick="ConfirmarEliminarAccionCorrectiva('@kvp.Id.TrimEnd()')" class="btn btn-sm btn-danger">Eliminar</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd() == @Model.PersonaUnica.Rut.TrimEnd() && c.Estado == 6 && c.IdAccionCorrectiva != null) != null && Model.EventoUnico.Estado == 6)
+                                                                    {
+                                                                        @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd() == @Model.PersonaUnica.Rut.TrimEnd() && c.Estado == 6 && c.IdAccionCorrectiva.TrimEnd() == @kvp.Id.TrimEnd()) != null && Model.EventoUnico.Estado == 6)
+                                                                        {
+                                                                            <a asp-action="FormularioCerrarAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-info" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-AccionCorrectivaID="@kvp.Id.TrimEnd()">Cerrar</a>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @if (Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd() == @Model.PersonaUnica.Rut.TrimEnd() && c.Estado == 6) != null && Model.EventoUnico.Estado == 6)
+                                                                        {
+                                                                            <a asp-action="FormularioEditAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-warning" asp-route-EventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-AccionCorrectivaID="@kvp.Id.TrimEnd()">Editar</a>
+                                                                            @*<a asp-action="DeleteAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-danger btn-sm" asp-route-AccionCorrectivaID="@kvp.Id">
+                                                                                Eliminar
+                                                                            </a>*@
+                                                                            <a onclick="ConfirmarEliminarAccionCorrectiva('@kvp.Id.TrimEnd()')" class="btn btn-sm btn-danger">Eliminar</a>
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                <form asp-action="Delete" method="post">
+                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                    {
+                                        <a asp-action="CrearFormularioAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-primary" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Acción Correctiva</a>
+                                        @if (Model.EventoUnico.Estado == 6)
+                                        {
+                                            @if (Model.ListaAccionCorrectiva.Where(c => c.Estado.TrimEnd().Equals("Pendiente") && c.Removed != true).Count() > 0)
+                                            {
+                                                <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModalInfoAC">
+                                                    Cerrar Etapa
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @*<a asp-action="AprobarAccionCorrectiva" asp-controller="Home" class="btn btn-sm  btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cerrar Etapa</a>*@
+                                                <a onclick="ConfirmarCierreEtapaAccionCorrectiva()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+
+                                            }
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (@Model.ListaPersonaEvento.FirstOrDefault(c => c.IdEvento.TrimEnd().Equals(Model.EventoUnico.Id.TrimEnd()) && c.RutPersona.TrimEnd().Equals(Model.PersonaUnica.Rut.TrimEnd()) && c.Estado == 6 && c.IdAccionCorrectiva == null) != null && Model.EventoUnico.Estado == 6)
+                                        {
+                                            <a asp-action="CrearFormularioAccionCorrectiva" asp-controller="AccionCorrectiva" class="btn btn-sm btn-primary" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Acción Correctiva</a>
+                                            @if (@Model.ListaAccionCorrectiva.Where(c => c.Removed != true).Count() > 0)
+                                            {
+                                                @if (Model.ListaAccionCorrectiva.Where(c => c.Estado.TrimEnd().Equals("Pendiente") && c.Removed != true).Count() > 0)
+                                                {
+                                                    <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModalInfoAC">
+                                                        Cerrar Etapa
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    @*<a asp-action="AprobarAccionCorrectiva" asp-controller="Home" class="btn btn-sm  btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Cerrar Acciones Correctivas</a>*@
+                                                    <a onclick="ConfirmarCierreEtapaAccionCorrectiva()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a onclick="ConfirmarCierreEtapaAccionCorrectiva()" class="btn btn-sm  btn-default">Cerrar Etapa</a>
+                                            }
+                                        }
+                                    }
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            //----------------------------------Evaluacion-------------------------------
+            @if (Model.EventoUnico.Estado >= 7)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#EvaluacionInfo">
+                                Evaluación
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="EvaluacionInfo" class="panel-collapse collapse @MinMax7">
+                        <div class="panel-body">
+
+                            @if (Model.Evaluacion != null)
+                            {
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        @Html.Label("Fecha Registro", null, new { @class = " col-lg-2" })
+                                        <div class="col-lg-5">
+                                            <input class="form-control" asp-for="@Model.Evaluacion.FechaRegistro" type="date" readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    @if (Model.Evaluacion.Efectiva != null)
+                                    {
+                                        if (Model.Evaluacion.Efectiva == true)
+                                        {
+                                            <div class="form-group">
+                                                <label class="col-lg-2">¿Analisis Causa Raiz Efectivo?</label>
+                                                <div class="col-lg-5">
+                                                    <input class="form-control" value="Si" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="form-group">
+                                                <label class="col-lg-2">¿Analisis Causa Raiz Efectivo?</label>
+                                                <div class="col-lg-5">
+                                                    <input class="form-control" value="No" readonly="readonly" />
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="form-group">
+                                        <label class="col-lg-2">Descripción</label>
+                                        <div class="col-lg-5">
+                                            <textarea class="form-control" id="textarea" asp-for="@Model.Evaluacion.Descripcion"
+                                                      placeholder="Descripción" readonly="readonly"> </textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="FormularioEditEvaluacion" asp-controller="Evaluacion" class="btn btn-sm  btn-warning" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-EvaluacionID="@Model.Evaluacion.Id.TrimEnd()">Editar Evaluacion</a>
+                                }
+                            }
+                            else
+                            {
+                                <h4>No hay Evaluación Registrada</h4>
+                                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="FormularioCrearEvaluacion" asp-controller="Evaluacion" class="btn btn-sm btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Evaluación</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                //------------------------------------Verificación------------------------------------
+                @if (Model.EventoUnico.Estado >= 8)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#VerificacionInfo">
+                                    Verificación
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="VerificacionInfo" class="panel-collapse collapse @MinMax9">
+                            <div class="panel-body">
+                                @if (Model.Verificacion != null)
+                                {
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            @Html.Label("Fecha Registro", null, new { @class = " col-lg-2" })
+                                            <div class="col-lg-5">
+                                                <input class="form-control" asp-for="@Model.Verificacion.FechaRegistro" type="date" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        @if (Model.Verificacion.Efectiva != null)
+                                        {
+                                            if (Model.Verificacion.Efectiva == true)
+                                            {
+                                                <div class="form-group">
+                                                    <label class="col-lg-2">¿Fue Efectivo?</label>
+                                                    <div class="col-lg-5">
+                                                        <input class="form-control" value="Si" readonly="readonly" />
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group">
+                                                    <label class="col-lg-2">¿Fue Efectivo?</label>
+                                                    <div class="col-lg-5">
+                                                        <input class="form-control" value="No" readonly="readonly" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="form-group">
+                                            <label class="col-lg-2">Descripción</label>
+                                            <div class="col-lg-5">
+                                                <textarea class="form-control" id="textarea" asp-for="@Model.Verificacion.Descripcion"
+                                                          placeholder="Descripción" readonly="readonly"> </textarea>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                    {
+                                        <a asp-action="FormularioEditVerificacion" asp-controller="Verificacion" class="btn btn-sm  btn-warning" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-VerificacionID="@Model.Verificacion.Id.TrimEnd()">Editar Verificacion</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <h4>No hay Verificación Registrada</h4>
+                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                    {
+                                        <a asp-action="FormularioCrearVerificacion" asp-controller="Verificacion" class="btn btn-sm btn-default" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Verificación</a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        }
+    }
+
+            }
+        }
+    }
+
+</div>
+@*-------------------Respuesta Cliente------------------*@
+@if (Model.EventoUnico.TipoEvento == 1 || Model.EventoUnico.TipoEvento == 2)
+{
+
+    <div class="panel-group" id="acordeon2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#acordeon2" href="#RespuestaCliente">
+                        Respuesta Cliente
+                    </a>
+                </h4>
+            </div>
+            <div id="RespuestaCliente" class="panel-collapse collapse ">
+                <div class="panel-body">
+                    @if (Model.RespuestaUnica == null)
+                    {
+                        <h4>No hay Respuesta Registrada.</h4>
+                        <p></p>
+                        @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                        {
+                        <a asp-action="CrearRespuestaCliente" asp-controller="Home" class="btn btn-sm btn-primary" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Registrar Respuesta Cliente</a>
+                        }
+                    }
+                        else
+                        {
+
+                        <h3>@Model.RespuestaUnica.Descripcion</h3>
+                        <p></p>
+                        @if (Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("RespuestaCliente")).Count() > 0)
+                    {
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Archivos</th>
+                                        <th>Fecha Registro</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ar in Model.ListaArchivos.Where(c => !c.Removed == true && c.Tipo.TrimEnd().Equals("RespuestaCliente")))
+                                    {
+                                        <tr>
+                                            <td><a style="color:dodgerblue">@ar.Nombre</a></td>
+                                            <td>@ar.FechaRegistro</td>
+                                            <td>
+                                                <form asp-action="Delete" method="post">
+                                                    <a asp-action="DownloadArchivoRespuestaCliente" asp-controller="EventoSecuencia" class="btn btn-sm btn-default" asp-route-Identificador="@ar.Identificador.TrimEnd()" asp-route-filename="@ar.Nombre.TrimEnd()" asp-route-Tipo="RespuestaCliente">Descargar</a>
+                                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                    {
+                                                        @*<a asp-action="DeleteArchivo" asp-controller="EventoSecuencia" class="btn btn-danger btn-sm" asp-route-FileId="@ar.FileId" asp-route-EventoId="@Model.EventoUnico.Id.TrimEnd()">
+                                                            Eliminar
+                                                        </a>*@
+                                                        <a onclick="ConfirmarEliminarArchivo('@ar.FileId')" class="btn btn-sm  btn-danger">Eliminar</a>
+
+                                                    }
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                        <a asp-action="EditarRespuestaCliente" asp-controller="Home" class="btn btn-sm btn-warning" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Editar Respuesta</a>
+                        @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                        {
+
+                            @*<a asp-action="DeleteRespuestaCliente" asp-controller="Home" class="btn btn-sm btn-danger" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()">Eliminar Respuesta</a>*@
+                            <a onclick="ConfirmarEliminarRespuesta()" class="btn btn-sm  btn-danger">Eliminar</a>
+
+                        }
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+    @*//---------------------Modal Bitacora------------------------------------------------*@
+
+    @*<div class="modal fade" id="myModalMensaje" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Bitacora del evento</font></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @foreach (var kvp in Model.ListaMensajes)
+                        {
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-info">
+                                        <i></i><P><font color="#283747">Fecha Registro:</font>@kvp.FechaRegistro</P>
+
+                                        @if (@kvp.RutPersona.TrimEnd() == "Administrador")
+                                        {
+                                            <i></i><P><font color="#283747">Autor:</font>Administrador</P>
+
+                                        }
+                                        else
+                                        {
+
+                                            <P>
+                                                <font color="#283747">Autor:</font>@Model.ListaPersonas.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut.Equals(@kvp.RutPersona)).nombreCompleto
+                                            </P>
+                                        }
+                                        <P><textarea asp-for="@kvp.Descripcion" class="form-control" id="textarea" placeholder="Descripcion" readonly="readonly"> </textarea> </P>
+                                        <i></i>
+
+                                        @if (Model.PersonaUnica != null)
+                                        {
+                                            @if (@kvp.RutPersona == @Model.PersonaUnica.Rut)
+                                            {
+                                                <a asp-action="DeleteMensaje" asp-controller="EventoSecuencia" class="btn btn-danger btn-sm" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-MensajeID="@kvp.Id">
+                                                    Eliminar
+                                                </a>
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="DeleteMensaje" asp-controller="EventoSecuencia" class="btn btn-danger btn-sm" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-MensajeID="@kvp.Id">
+                                                Eliminar
+                                            </a>
+
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        }
+                        <form asp-action="RegistrarMensaje" asp-controller="EventoSecuencia" class="form-horizontal" method="post">
+                            <div class="form-group">
+                                <label asp-for="@Model.EventoUnico.Id" class="col-lg-3 ">Id Evento</label>
+                                <div class="col-lg-5">
+                                    <input asp-for="@Model.EventoUnico.Id" value="@EventoIdTrim" class="form-control" placeholder="User Name" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.descripcion" class="col-lg-3">Nota:</label>
+                                <div class="col-lg-5">
+                                    <textarea asp-for="@Model.descripcion" name="@Model.descripcion" class="form-control" id="textarea"
+                                              placeholder="Descripcion"> </textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-5 col-lg-offset-3">
+                                    <button type="submit" class="btn btn-primary">Registrar Nota </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    @*-----------------------------------Modal Eliminar Causa ???? no funca--------------------------------*@
+    <div class="modal fade" id="myModalEliminarCausa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Eliminar Causa</font></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Se eliminara la causa (Los archivos adjuntos no se eliminaran con esta acción)</p>
+                    <p>¿Esta seguro de eliminar?</p>
+                    <form asp-action="EliminarCausaModal" asp-controller="AnalisisCausaRaiz" class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">ID Evento</label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.EventoUnico.Id" id="IdEvento2" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">ID Causa</label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.RCA.Id" id="IdEliminarCausa" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------------------Modal Cerrar Acciones Corrrectivas ??? no funciona----------------------------------*@
+    <div class="modal fade" id="myModalCerrarAccionCorrectiva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Cerrar Accion Correctiva</font></h4>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="EliminarCausaModal" asp-controller="AnalisisCausaRaiz" class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">ID Evento</label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.EventoUnico.Id" id="IdEvento2" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">ID Causa</label>
+                            <div class="col-lg-8">
+                                <input asp-for="@Model.RCA.Id" id="IdEliminarCausa" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------MODAL INFO--------------------------------------------*@
+    <div class="modal fade" id="myModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Alerta</font></h4>
+                </div>
+                <div class="modal-body">
+                    <h5><font color="black">Para realizar cambios en el evento debe contactarse con personal autorizado</font></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModalInfoAC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Alerta</font></h4>
+                </div>
+                <div class="modal-body">
+                    <h5><font color="black">Para cerrar la accion correctiva no deben haber acciones pendientes </font></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModalInfoAC" tabindex="-1" role="dialog" arimyModalBuscarResposableEtapasa-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Alerta</font></h4>
+                </div>
+                <div class="modal-body">
+                    <h5><font color="black">Para cerrar la accion correctiva no deben haber acciones pendientes </font></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------MODAL BUSCAR PERSONA RESPONSABLE ETAPAS--------------------------------------------*@
+    <div class="modal fade" id="myModalBuscarResposableEtapas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Responsable Registro Análisis Causa Raíz</font></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse">
+                                        Responsable
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body" id="body">
+                                    @if (Model.ListaPersonaEvento.Where(c => !c.Removed == true && c.Estado == 4) != null)
+                                    {
+                                        @if (Model.ListaPersonaEvento.Where(c => !c.Removed == true && c.Estado == 4).Count() > 0)
+                                        {
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover " style="height:20%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Responsable</th>
+                                                            <th>Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var kvp in Model.ListaPersonaEvento.Where(c => !c.Removed == true && c.Estado == 4))
+                                                        {
+                                                            <tr>
+                                                                <td>@Model.ListaPersonasResponsable.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut.Equals(@kvp.RutPersona)).nombreCompleto</td>
+                                                                <td>
+                                                                    @*Modificar aca*@
+                                                                    <form asp-action="Delete" method="post">
+                                                                        @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                                        {
+                                                                            @*<a asp-action="DeleteResponsableRCA" asp-controller="AnalisisCausaRaiz" class="btn btn-danger btn-sm" asp-route-eventoID="@Model.EventoUnico.Id.TrimEnd()" asp-route-ResponsableRut="@kvp.RutPersona.TrimEnd()">
+                                                                                    Eliminar
+                                                                                </a>*@
+                                                                            <a onclick="ConfirmarEliminarResponsableAnalisisCausaRaiz('@kvp.RutPersona.TrimEnd()')" class="btn btn-sm  btn-danger">Eliminar</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a disabled class="btn btn-danger btn-sm">
+                                                                                Eliminar
+                                                                            </a>
+                                                                        }
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                    {
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse">
+                                            Asignar Responsable Registro Análisis Causa Raíz
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body" id="body">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="col-lg-3">Nombre Persona</label>
+                                                <div class="col-lg-9">
+                                                    <input class="form-control" id="NombrePersona" placeholder="Nombre Persona">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3"></label>
+                                                <div class="col-lg-9">
+                                                    <a class="btn btn-primary btn-sm" onclick="getPersona2Ajax('EventoSecuencia/getPersonaResponsableModalAjax')">
+                                                        Buscar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover" id="tabla"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@*--------------------------------MODAL BUSCAR INVOLUCRADO ACCION INMEDIATA--------------------------------------------*@
+<div class="modal fade" id="myModalBuscarInvolucradoAccionInmediata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Involucrados Acción Inmediata</font></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group" hidden>
+                    <label class="col-lg-2 control-label">ID Evento</label>
+                    <div class="col-lg-3">
+                        <input asp-for="@Model.AI.Id" id="IdPruebaAI" readonly="readonly" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse">
+                                    Involucrado
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body" id="body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="tablaIIAI"></table>
+                                </div>
+                                  
+                                        @*<div class="table-responsive">
+                                            <table class="table table-bordered table-hover " style="height:20%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Involucrado</th>
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var kvp in Model.ListaInvolucradosAccionInmediata.Where(c => !c.Removed == true))
+                                                    {
+                                                        <tr>
+                                                            <td>@Model.ListaInvolucradosAccionInmediata.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut.Equals(@kvp.Rut)).nombreCompleto</td>
+                                                            <td>
+                                                                
+                                                                <form asp-action="Delete" method="post">
+                                                                    @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                                                                    {
+                                                                    <a onclick="ConfirmarEliminarResponsableAnalisisCausaRaiz('@kvp.Rut.TrimEnd()')" class="btn btn-sm  btn-danger">Eliminar</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a disabled class="btn btn-danger btn-sm">
+                                                                            Eliminar
+                                                                        </a>
+                                                                    }
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>*@
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (User.IsInRole("Calidad") || User.IsInRole("Admins"))
+                {
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse">
+                                        Asignar Involucrado
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body" id="body">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-lg-3">Nombre Persona</label>
+                                            <div class="col-lg-9">
+                                                <input class="form-control" id="NombrePersonaInvolucradoAI" placeholder="Nombre Persona">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3"></label>
+                                            <div class="col-lg-9">
+                                                <a class="btn btn-primary btn-sm" onclick="getPersona3Ajax('EventoSecuencia/getPersonaResponsableModalAjax')">
+                                                    Buscar
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-hover" id="tablaIAI"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    @*--------------------------------MODAL BUSCAR PERSONA--------------------------------------------*@
+    <div class="modal fade" id="myModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Asignar Involucrado</font></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Nombre Persona</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" id="NombrePersonaInvolucrado" placeholder="Nombre Persona">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label"></label>
+                            <div class="col-lg-8">
+                                <a class="btn btn-primary btn-sm" onclick="getPersonaAjax('EventoSecuencia/getPersonaModalAjax')">
+                                    Buscar
+                                </a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="tablaInvolucrado"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*--------------------------------MODAL BUSCAR PERSONA RESPONSABLE--------------------------------------------*@
+    <div class="modal fade" id="myModalBuscarResponsable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Asignar Responsable</font></h4>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="AgregarResponsableInvolucrado" asp-controller="EventoSecuencia" class="form-horizontal" method="post">
+                        <div class="form-group">
+                            <label class="col-lg-3">ID Evento</label>
+                            <div class="col-lg-5">
+                                <input asp-for="@Model.EventoUnico.Id" id="IdEvento2" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">Supervisor/Jefe</label>
+                            <div class="col-lg-5">
+                                <select asp-for="@Model.ResponsableInvolucrado" class="form-control" id="responsableId" required>
+                                    <option value="" disabled selected>Selecciona tu opción</option>
+                                    @foreach (var kvp in Model.ListaSupervisores.ToList())
+                                    {
+                                        <option value="@kvp.Rut">@kvp.Nombre @kvp.ApellidoPaterno @kvp.ApellidoMaterno</option>
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5 col-lg-offset-3">
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        function getPersonaAjax(action) {
+            var valor = document.getElementById("NombrePersonaInvolucrado").value;
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { valor },
+                success: function (response) {
+                    console.log(response);
+                    OnSuccess2(response);
+                }
+            });
+        }
+    </script>
+    <script>
+        var items;
+        function OnSuccess2(response) {
+            items = response;
+            if (response.length == 0) {
+                alert("No hay personas con ese nombre");
+            }
+            else {
+                var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+                $.each(items, function (i, row) {
+                    datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='ComprobarPersonaAjax(" + row.rut + ")' class='btn btn-primary btn-sm'>Asignar</a>" + "</td></tr>"
+                });
+                datos += "</tbody></thead>";
+                $('#tablaInvolucrado').html(datos)
+            }
+        }
+    </script>
+    <script>
+    function ComprobarPersonaAjax(rut) {
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+        var action = "EventoSecuencia/ComprobarInvolucrado";
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut:rut,IdEvento: idEventoVariable },
+            success: function (response) {
+                if (response == 0){
+                    AsignarInvolucrado(rut);
+                }
+                else
+                {
+                    alert("La persona ya esta asignada como involucrada.");
+                }
+            }
+        });
+
+    }
+    </script>
+    <script>
+    function AsignarInvolucrado(rut) {
+        var action = "EventoSecuencia/AsignarInvolucradoModal";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut: rut, IdEvento: idEventoVariable },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+    </script>
+    <script>
+        function getDataAjax(id, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { id },
+                success: function (response) {
+                    console.log(response);
+                    OnSuccess(response);
+                }
+            });
+        }
+    </script>
+    <script>
+        function getDataAjaxCausa(id, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { id },
+                success: function (response) {
+                    console.log(response);
+                    OnSuccess(response);
+                }
+            });
+        }
+    </script>
+    <script>
+        var items;
+        function OnSuccess(response) {
+            items = response;
+            $.each(items, function (IndiceEventos, val) {
+                $('input[id=IdEliminarCausa]').val(val.id);
+            });
+        }
+    </script>
+    <script>
+        function setDataResponsable(id, action) {
+            var msj = $('select[name=responsableId222]').val();
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { id, msj },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+    <script>
+        function getPersona2Ajax(action) {
+            var valor = document.getElementById("NombrePersona").value;
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { valor },
+                success: function (response) {
+                    console.log(response);
+                    OnSuccess4(response);
+                }
+            });
+
+        }
+    </script>
+    <script>
+        var items;
+        function OnSuccess4(response) {
+            items = response;
+            if (response.length == 0) {
+                alert("No hay personas con ese nombre");
+            }
+            else {
+                var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+                $.each(items, function (i, row) {
+                    var rutstring = row.rut.toString();
+                    datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='ComprobarResponsableRCA(" + '"' + row.rut + '"' + ")' class='btn btn-primary btn-sm'>Asignar Responsable</a>" + "</td></tr>";
+                });
+                datos += "</tbody></thead>";
+                $('#tabla').html(datos)
+            }
+        }
+    </script>
+    <script>
+    function ComprobarResponsableRCA(rut) {
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+        var action = "EventoSecuencia/ComprobarResponsableRCA";
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut:rut,IdEvento: idEventoVariable },
+            success: function (response) {
+                if (response == 0){
+                    AsignarResponsableRCA(rut);
+                }
+                else
+                {
+                    alert("La persona ya esta asignada como responsable.");
+                }
+            }
+        });
+
+    }
+    </script>
+    <script>
+    function AsignarResponsableRCA(rut) {
+        var action = "EventoSecuencia/AsignarResponsableModalRCA";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut: rut, IdEvento: idEventoVariable },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+    </script>
+    @*Confirmar cierre de etapa de Accion Inmediata*@
+
+    <script>
+        function ConfirmarCierreEtapaAI() {
+            confirmar = confirm("¿Esta seguro de cerrar la etapa de Acción Inmediata?");
+            if (confirmar) {
+                CerrarEtapaAI();
+            }
+        }
+    </script>
+    @*Cerrar etapa de accion Inmediata*@
+    <script>
+    function CerrarEtapaAI() {
+        var action = "EventoSecuencia/AprobarAccionInmediata";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { eventoid: idEventoVariable },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+    </script>
+    <script>
+        function ConfirmarCierreEtapaInvolucrados() {
+            confirmar = confirm("¿Esta seguro de cerrar la etapa de Involucrados?");
+            if (confirmar) {
+                CerrarEtapaInvolucrados();
+            }
+        }
+    </script>
+    <script>
+    function CerrarEtapaInvolucrados() {
+        var action = "EventoSecuencia/AprobarRegistroInvolucrados";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { eventoid: idEventoVariable },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+    </script>
+    <script>
+        function ConfirmarCierreEtapaAccionCorrectiva() {
+            confirmar = confirm("¿Esta seguro de cerrar la etapa de Acción Correctiva?");
+            if (confirmar) {
+                AprobarAccionCorrectiva();
+            }
+        }
+    </script>
+    <script>
+    function AprobarAccionCorrectiva() {
+        var action = "EventoSecuencia/AprobarAccionCorrectiva";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { eventoid: idEventoVariable },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+    </script>
+    @*Confirmar Eliminar Accion Inmediata*@
+    <script>
+        function ConfirmarEliminarAccionInmediata(id) {
+            confirmar = confirm("¿Esta seguro de eliminar la accion Inmediata?");
+            if (confirmar) {
+                EliminarAccionInmediata(id);
+            }
+        }
+    </script>
+    <script>
+        function EliminarAccionInmediata(id) {
+            var action = "AccionInmediata/DeleteAccionInmediata";
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { AccioninmediataID: id },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    @*Confirmar Eliminar Responsable Registro Etapas Analisis Causa Raiz*@
+    <script>
+        function ConfirmarEliminarResponsableAnalisisCausaRaiz(rut) {
+            confirmar = confirm("¿Esta seguro de eliminar al reponsable del registro del análisis causa raíz?");
+            if (confirmar) {
+                EliminarResponsableAnaisisCausaRaiz(rut);
+            }
+        }
+    </script>
+    <script>
+    function EliminarResponsableAnaisisCausaRaiz(rut) {
+        var action = "AnalisisCausaRaiz/DeleteResponsableRCA";
+         var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { eventoID: idEventoVariable, ResponsableRut: rut },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+    </script>
+    @*Confirmar Eliminar Analisis Causa Raiz*@
+    <script>
+        function ConfirmarEliminarAnalisisCausaRaiz(id) {
+            confirmar = confirm("¿Esta seguro de eliminar el análisis de causa raíz?");
+            if (confirmar) {
+                EliminarAnalisisCausaRaiz(id);
+            }
+        }
+    </script>
+    <script>
+    function EliminarAnalisisCausaRaiz(id) {
+        var action = "AnalisisCausaRaiz/EliminarCausa";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+
+         $.ajax({
+            type: "POST",
+            url: action,
+            data: { Id: id, IdEvento: idEventoVariable },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+    </script>
+    @*Confirmar Eliminar Involucrado*@
+    <script>
+        function ConfirmarEliminarInvolucrado(rut) {
+            confirmar = confirm("¿Esta seguro de eliminar el involucrado?");
+            if (confirmar) {
+                EliminarInvolucrado(rut);
+            }
+        }
+    </script>
+    <script>
+    function EliminarInvolucrado(rut) {
+        var action = "AnalisisCausaRaiz/DeleteInvolucrado";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+         $.ajax({
+            type: "POST",
+            url: action,
+            data: { eventoID: idEventoVariable, InvolucradoRut: rut },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+    </script>
+    @*Confirmar Eliminar Accion Correctiva*@
+    <script>
+        function ConfirmarEliminarAccionCorrectiva(Id) {
+            confirmar = confirm("¿Esta seguro de eliminar la Accion Correctiva?");
+            if (confirmar) {
+                EliminarAccionCorrectiva(Id);
+            }
+        }
+    </script>
+
+    <script>
+        function EliminarAccionCorrectiva(Id) {
+            var action = "AccionCorrectiva/DeleteAccionCorrectiva";
+
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { AccionCorrectivaID: Id },
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    <script>
+            function ConfirmarEliminarArchivo(Id) {
+                confirmar = confirm("¿Esta seguro de eliminar el archivo?");
+                if (confirmar) {
+                    EliminarArchivo(Id);
+                }
+            }
+    </script>
+<script>
+            function EliminarArchivo(Id) {
+                var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+                var action = "EventoSecuencia/DeleteArchivo";
+
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: { EventoId: idEventoVariable, FileId: Id },
+                    success: function (response) {
+                        location.reload();
+                    }
+                });
+            }
+</script>
+<script>
+            function ConfirmarEliminarRespuesta() {
+                confirmar = confirm("¿Esta seguro de eliminar la respuesta de cliente?");
+                if (confirmar) {
+                    EliminarRespuesta();
+                }
+            }
+</script>
+<script>
+            function EliminarRespuesta() {
+                var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+                var action = "/Home/DeleteRespuestaCliente";
+
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: { EventoId: idEventoVariable},
+                    success: function (response) {
+                        location.reload();
+                    }
+                });
+            }
+</script>
+<script>
+            function getPersona3Ajax(action) {
+                var valor = document.getElementById("NombrePersonaInvolucradoAI").value;
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: { valor },
+                    success: function (response) {
+                        console.log(response);
+                        OnSuccess5(response);
+                    }
+                });
+
+            }
+</script>
+<script>
+            var items;
+            function OnSuccess5(response) {
+                items = response;
+                if (response.length == 0) {
+                    alert("No hay personas con ese nombre");
+                }
+                else {
+                    var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+                    $.each(items, function (i, row) {
+                        var rutstring = row.rut.toString();
+                        datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='ComprobarInvolucradoAI(" + '"' + row.rut + '"' + ")' class='btn btn-primary btn-sm'>Asignar Involucrado</a>" + "</td></tr>";
+                    });
+                    datos += "</tbody></thead>";
+                    $('#tablaIAI').html(datos)
+                }
+            }
+</script>
+<script>
+ function ComprobarInvolucradoAI(rut) {
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+        var action = "EventoSecuencia/ComprobarInvolucradoAI";
+        var idAI = document.getElementById("IdPruebaAI").value;
+        $.ajax({
+        type: "POST",
+        url: action,
+        data: { Rut: rut, IdEvento: idEventoVariable, IDAI: idAI },
+        success: function (response) {
+                  console.log(response);
+        if (response == 0){
+            AsignarInvolucradoAI(rut);
+        }
+        else
+        {
+        alert("La persona ya esta asignada como Involucrado.");
+        }
+        }
+        });
+
+        }
+</script>
+        <script>
+            function AsignarInvolucradoAI(rut) {
+                var action = "EventoSecuencia/AsignarInvolucradoAI";
+                var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+                var idAI = document.getElementById("IdPruebaAI").value;
+              
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { Rut: rut, IdEvento: idEventoVariable, Id: idAI },
+            success: function (response) {
+                location.reload();
+                    }
+                });
+            }
+        </script>
+
+
+<script>
+
+        function getDataAI(id, action) {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { id },
+                success: function (response) {
+                    console.log(response);
+                    OnSuccessAI(response);
+                }
+            });
+        }
+</script>
+
+<script>
+        var items;
+        function OnSuccessAI(response) {
+            items = response;
+            $.each(items, function (IndiceEventos, val) {
+                $('input[id=IdPruebaAI]').val(val.id);
+                getInvolucradosAI(val.id);
+            });
+
+        }
+
+</script>
+<script>
+        function getInvolucradosAI(IDAI) {
+          
+            var action = "EventoSecuencia/getPersonaInvolucradoAI";
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { id: IDAI },
+                success: function (response) {
+                    console.log(response);
+                    CargarInvolucradosAI(response);
+  
+
+
+
+                }
+            });
+
+        }
+</script>
+
+<script>
+        var items;
+        function CargarInvolucradosAI(response) {
+            items = response;
+            if (response.length == 0) {
+                $('#tablaIIAI').empty()
+            }
+            else {
+                var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Acción</th></tr></thead><tbody>";
+                $.each(items, function (i, row) {
+                    var rutstring = row.rut.toString();
+                    datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + "<a onclick='ConfirmarEliminarInvolucradoAI(" + '"' + row.rut + '"' + ")' class='btn btn-danger btn-sm'>Eliminar</a>" + "</td></tr>";
+                });
+                datos += "</tbody></thead>";
+                $('#tablaIIAI').html(datos)
+            }
+        }
+</script>
+<script>
+        function ConfirmarEliminarInvolucradoAI(rut) {
+            var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+            var action = "EventoSecuencia/ConfirmarUsuario";
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { eventoID: idEventoVariable },
+                success: function (response) {
+                    if (response=="Autorizado"){
+                        confirmar = confirm("¿Esta seguro de eliminar el involucrado?");
+                        if (confirmar) {
+                            EliminarInvolucradoAI(rut);
+                        }
+
+                    } else {
+                        alert("No tiene permisos para eliminar");
+
+                    }
+              
+                }
+            });
+
+
+        }
+</script>
+<script>
+    function EliminarInvolucradoAI(rut) {
+        var action = "EventoSecuencia/DeleteInvolucradoAI";
+        var idEventoVariable = "@Model.EventoUnico.Id.TrimEnd()";
+         $.ajax({
+            type: "POST",
+            url: action,
+            data: { eventoID: idEventoVariable, InvolucradoRut: rut },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+</script>

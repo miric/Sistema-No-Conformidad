@@ -1,0 +1,83 @@
+﻿@model ListaArea
+@{
+    ViewData["Title"] = "Datos Page";
+   
+    
+}
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>AREAS</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+<table class="table table-condensed table-bordered">
+    @if (Model.ListaAreas.Count() == 0 )
+    {
+        <tr><td colspan="3" class="text-center"><font color="red">No existen areas en el sistema!</font></td></tr>
+    }
+    else
+    {
+        <tr><th>Id</th><th>Name</th><th>Jefe Area</th><th>Acción</th></tr>
+
+        foreach (var area in Model.ListaAreas)
+        {
+            <tr>
+                <td>@area.Id</td>
+                <td>@area.Nombre</td>
+
+                @if (@Model.ListaPersonaArea.FirstOrDefault(c => c.IdArea == @area.Id) != null)
+                {
+                    string rutpa = @Model.ListaPersonaArea.FirstOrDefault(c => c.IdArea == @area.Id).RutPersona;
+                     <td>@Model.ListaPersonas.Select(c => new { nombreCompleto = c.Nombre + c.ApellidoPaterno + c.ApellidoMaterno, rut = c.Rut }).FirstOrDefault(c => c.rut == rutpa).nombreCompleto</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+           
+
+
+                <td class="text-center">
+                    <form asp-action="Delete" method="post">
+                        <a asp-action="IndiceSubAreas" class="btn btn-sm btn-primary" asp-route-AreaId="@area.Id">SubAreas</a>
+                        <a asp-action="FormularioEditArea" class="btn btn-sm btn-warning" asp-route-AreaId="@area.Id">Editar</a>
+                        @*<a asp-action="DeleteArea" class="btn btn-danger btn-sm" asp-route-AreaId="@area.Id">
+                            Eliminar
+                        </a>*@
+                        <a onclick="ConfirmarEliminarArea('@area.Id')" class="btn btn-sm  btn-danger">Eliminar</a>
+                    </form>
+                </td>
+             
+
+            </tr>
+        }
+    }
+</table>
+<a class="btn btn-primary" asp-action="FormularioCrearArea" asp-controller="Datos">Crear Area</a>
+
+
+<script>
+    function ConfirmarEliminarArea(id) {
+        confirmar = confirm("¿Esta seguro de eliminar el area?");
+        if (confirmar) {
+            EliminarArea(id);
+        }
+    }
+</script>
+<script>
+    function EliminarArea(id) {
+        var action = "Datos/DeleteArea";
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { AreaId: id },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+</script>

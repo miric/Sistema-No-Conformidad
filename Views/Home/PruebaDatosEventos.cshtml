@@ -1,0 +1,65 @@
+﻿@model List<int>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+
+<table class="table table-condensed table-bordered">
+
+    <tr>
+        <th>ID</th>
+      
+
+
+        @foreach (var kvp in Model)
+        {
+        <tr>
+            <td>@kvp</td>
+           
+
+        </tr>
+        }
+    </table>
+
+
+@*<p>@Model.EventoUnico.Id</p>
+@*<p>@Model.ListaUsuarios.FirstOrDefault(c => c.Id == Model.Usuario.Id).Email</p>*@
+
+@*<table class="table table-condensed table-bordered">
+
+    <tr>
+        <th>ID</th>
+        <th>IdEvento</th>
+        <th>IdPersona</th>
+
+        @foreach (var kvp in Model.personaEvento)
+        {
+        <tr>
+            <td>@kvp.Id</td>
+            <td>@kvp.IdEvento</td>
+            <td>@kvp.RutPersona</td>
+        </tr>
+            }
+    </table>
+
+
+<table class="table table-condensed table-bordered">
+
+    <tr>
+        <th>ID</th>
+        <th>TipoEvento</th>
+
+
+        @foreach (var kvp in Model.Evento)
+        {
+        <tr>
+            <td>@kvp.Id</td>
+            <td>@kvp.TipoEvento</td>
+       
+        </tr>
+        }
+    </table>*@

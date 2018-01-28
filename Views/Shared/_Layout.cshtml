@@ -1,0 +1,295 @@
+﻿<!-- === BEGIN HEADER === -->
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <!-- Title -->
+    <title>SGC CSAN</title>
+    <!-- Meta -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!-- Favicon -->
+    @*<link href="favicon.ico" rel="shortcut icon">*@
+    <!-- Bootstrap Core CSS -->
+
+
+    <link href="~/css/bootstrap.css" rel="stylesheet"/>
+
+    <link href="~/css/animate.css" rel="stylesheet"/>
+    @*<link  href="~/css/font-awesome.css" rel="stylesheet"/>*@
+    <link  href="~/css/nexus.css" rel="stylesheet"/>
+    <link  href="~/css/responsive.css" rel="stylesheet"/>
+    <link  href="~/css/custom.css" rel="stylesheet"/>
+
+
+    <!-- Google Fonts-->
+    <link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <div id="body-bg">
+        <!-- Phone/Email -->
+        <div id="pre-header" class="background-gray-lighter">
+            <div class="container no-padding">
+                <div class="row hidden-xs">
+                    <div class="col-sm-6 padding-vert-5">
+                        &nbsp;Centro de Servicios de Antofagasta, Finning Chile
+                    </div>
+                    <div class="col-sm-6 text-right padding-vert-5">
+                        @*<strong>Email:</strong>&nbsp;info@joomla51.com*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Phone/Email -->
+        <!-- Header -->
+       
+        <div id="header">
+            <div class="container">
+                <div class="row">
+                    <!-- Logo -->
+                    <div class="col-sm-6">
+                    <div class="logo">
+                        <a href="index.html" title="">
+                            @*<img src="~/images/FinningCat.jpg" alt="Logo" />*@
+                         
+                        </a>
+                    </div>
+                        </div>
+                    <!-- End Logo -->
+                </div>
+            </div>
+        </div>
+      
+        <!-- End Header -->
+        <!-- Top Menu -->
+        <div id="hornav" class="bottom-border-shadow">
+            <div class="container no-padding border-bottom">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 no-padding">
+                        <div class="visible-lg">
+                            <ul id="hornavmenu" class="nav navbar-nav">
+                                <li>
+
+                                    <a asp-controller="Home" asp-action="Index">INICIO</a>
+                                </li>
+
+                                <li>
+                                    <span>REGISTRO</span>
+                                    <ul>
+                                        <li>
+                                            <a asp-action="CrearEventoPrimeraEtapa" asp-controller="Home">Registrar Evento</a>
+                                        </li>
+                                    @*@if (!User.IsInRole("Cliente"))
+                                    {
+                                        <li>
+                                            <a asp-action="RegistroAuditoria" asp-controller="Home">Registrar Auditoria</a>
+                                        </li>
+                                    }*@
+
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <span>Eventos</span>
+                                    <ul>
+                                        <li>
+                                            <a asp-action="IndiceEventos" asp-controller="Home">Eventos</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                @if (User.IsInRole("Admins") || User.IsInRole("Calidad"))
+                                {
+                                    <li>
+                                        <span>DATOS</span>
+                                        <ul>
+                                            <li>
+                                                <a asp-action="IndiceCliente" asp-controller="Datos">Cliente</a>
+                                            </li>
+
+                                            @*<li>
+                                                <a asp-action="FormularioCrearCliente" asp-controller="Datos">CrearCliente</a>
+                                            </li>*@
+
+                                            <li>
+                                                <a asp-action="Index" asp-controller="Datos">Area/SubArea</a>
+                                            </li>
+
+
+                                            <li>
+                                                <a asp-action="IndiceEquipos" asp-controller="Datos">Equipo/Modelo/Componente/Parte</a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="PrincipalComponentes" asp-controller="Datos">Componente</a>
+                                            </li>
+                                            
+                                            @*<li>
+                                                <a asp-action="FormularioCreateComponente" asp-controller="Datos">Crear Componente</a>
+                                            </li>*@
+                                            <li>
+                                                <a asp-action="IndiceParte" asp-controller="Datos">Parte</a>
+                                            </li>
+                                            @*<li>
+                                                <a asp-action="FormularioCrearParte" asp-controller="Datos">Crear Parte</a>
+                                            </li>*@
+
+                                        </ul>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admins"))
+                                {
+
+                                    <li>
+                                        <span>Panel Administración</span>
+                                        <ul>
+                                            <li>
+                                                <a asp-action="Index" asp-controller="Admin">Cuentas de Usuario</a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="CuentasPersonas" asp-controller="Admin">Cuentas de Personas</a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Index" asp-controller="RoleAdmin">Roles</a>
+                                            </li>
+                                            @*<li>
+                                                <a asp-action="Create" asp-controller="Admin">Crear Usuario</a>
+                                            </li>*@
+                                            @*<li>
+                                                <a asp-action="FormularioCrearPersona" asp-controller="Admin">Crear Persona</a>
+                                            </li>*@
+                                            <li>
+                                                <a asp-action="Subida" asp-controller="Home">Informe de Falla</a>
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
+
+
+                                }
+
+                                @if (User?.Identity?.IsAuthenticated ?? false)
+                                {
+                                        <li>
+                                            <span>@User.Identity.Name</span>
+                                            <ul>
+                                            
+
+                                                @if (!User.IsInRole("Admins"))
+                                                {
+                                                    <li>
+                                                        <a asp-action="Perfil" asp-controller="Home"><i></i>Perfil</a>
+                                                    </li> 
+                                                }
+                                                <li>
+                                                    <a asp-action="Logout" asp-controller="Account"><i></i>Logout</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                }
+
+                            </ul>
+
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Top Menu -->
+        <!-- === END HEADER === -->
+        <!-- === BEGIN CONTENT === -->
+
+
+        <div id="content" class="bottom-border-shadow">
+            <div class="container background-white bottom-border">
+                <div class="row margin-vert-30">
+                    <!-- Main Text -->
+                @RenderBody()
+                </div>
+            </div>
+        </div>
+
+        <!-- End Portfolio -->
+        <!-- === END CONTENT === -->
+        <!-- === BEGIN FOOTER === -->
+        <div id="base">
+            <div class="container bottom-border padding-vert-30">
+                <div class="row">
+                    <!-- Disclaimer -->
+                    <!-- End Disclaimer -->
+                    <!-- Contact Details -->
+                    <div class="col-md-6 margin-bottom-20">
+
+                        <h3 class="margin-bottom-10">Centro de Servicios de Antofagasta</h3>
+                        <p>
+                            <span class="">Finning Chile</span>
+                            @*<br>
+                            <span class="fa-envelope">Email:</span>
+                            <a href="mailto:info@example.com">info@example.com</a>
+                            <br>
+                            <span class="fa-link">Website:</span>
+                            <a href="http://www.example.com">www.example.com</a>*@
+                        </p>
+                        @*<p>
+                            The Dunes, Top Road,
+                            <br>Strandhill,
+                            <br>Co. Sligo,
+                            <br>Ireland
+                        </p>*@
+                    </div>
+                    <div class="col-md-6 margin-bottom-20">
+                        <img src="~/images/FinningCat.jpg" alt="Logo" class="img-thumbnail"  />
+                        </div>
+                        <!-- End Contact Details -->
+                        <!-- Sample Menu -->
+                        <!-- End Sample Menu -->
+                    </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div id="footer" class="background-grey">
+            <div class="container">
+                <div class="row">
+                    <!-- Footer Menu -->
+                    <div id="footermenu" class="col-md-8">
+                        
+                    </div>
+                    <!-- End Footer Menu -->
+                    <!-- Copyright -->
+                    <div id="copyright" class="col-md-4">
+                        <p class="pull-right">&copy; 2017 Fernando Aguirre Miric</p>
+                    </div>
+                    <!-- End Copyright -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <!-- End Footer -->
+        <!-- JS -->
+        <script src="~/js/jquery.min.js" type="text/javascript"></script>
+        <script src="~/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="~/js/scripts.js" type="text/javascript"></script>
+        <!-- Isotope - Portfolio Sorting -->
+        <script src="~/js/jquery.isotope.js" type="text/javascript"></script>
+        <!-- Mobile Menu - Slicknav -->
+        <script src="~/js/jquery.slicknav.js" type="text/javascript"></script>
+        <!-- Animate on Scroll-->
+        <script src="~/js/jquery.visible.js" type="text/javascript"></script>
+        <!-- Sticky Div -->
+        <script src="~/js/jquery.sticky.js" type="text/javascript"></script>
+        <!-- Slimbox2-->
+        <script src="~/js/slimbox2.js" type="text/javascript"></script>
+        <!-- Modernizr -->
+        <script src="~/js/modernizr.custom.js" type="text/javascript"></script>
+        <!-- End JS -->
+
+
+</body>
+</html>
+<!-- === END FOOTER === -->

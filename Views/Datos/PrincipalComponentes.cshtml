@@ -1,0 +1,79 @@
+﻿@model ListaComponente
+
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>COMPONENTES</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<table class="table table-condensed table-bordered">
+    @if (@Model.ListaComponentes.ToList().Count()==0)
+    {
+        <tr><td colspan="3" class="text-center"><font color="red">No existen componentes registrados!</font></td></tr>
+    }
+    else
+    {
+        <tr><th>Id</th><th>Nombre</th><th>NumeroSerie</th><th>Posicion</th><th>Acción</th></tr>
+        @foreach (var Componente in Model.ListaComponentes)
+        {
+            <tr>
+                <td>@Componente.Id</td>
+                <td>@Componente.Nombre</td>
+                <td>@Componente.NumeroSerie</td>
+                <td>@Componente.Posicion</td>
+
+
+
+
+                <td class="text-center">
+                    <form asp-action="Delete" method="post">
+           
+                        <a asp-action="FormularioEditComponente" class="btn btn-sm btn-warning" asp-route-ComponenteId="@Componente.Id">Editar</a>
+                        @*<a asp-action="DeleteComponente" class="btn btn-danger btn-sm" asp-route-ComponenteId="@Componente.Id">
+                            Eliminar
+                        </a>*@
+                        <a class="btn btn-sm btn-danger" onclick="ConfirmarEliminarComponente('@Componente.Id')">Eliminar</a>
+                    </form>
+                </td>
+
+
+
+
+
+                </tr>
+     }
+                }
+</table>
+<a class="btn btn-primary" asp-action="FormularioCreateComponente" asp-controller="Datos">Crear Componente</a>
+<a class="btn btn-default" asp-action="Index" asp-controller="Home" >Cancelar</a>
+<script>
+    function ConfirmarEliminarComponente(Id) {
+
+        confirmar = confirm("¿Esta seguro de eliminar el Componente?");
+        if (confirmar) {
+            EliminarComponente(Id);
+        }
+    }
+</script>
+<script>
+
+   function EliminarComponente(Id) {
+       var action = "DeleteComponente";
+       $.ajax({
+         type: "POST",
+         url: action,
+         data: { ComponenteId: Id },
+         success: function (response) {
+            location.reload();
+              }
+         });
+
+        }
+
+</script>

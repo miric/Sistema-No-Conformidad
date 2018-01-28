@@ -1,0 +1,72 @@
+﻿@model PruebaUser
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>PERFIL</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+<form class="form-horizontal" role="form" method="post">
+
+
+    <div class="form-group">
+        <label class="col-lg-2">Rut Persona</label>
+        <div class="col-lg-3">
+            <input  asp-for="@Model.Persona.Rut" class="form-control" id="SerieEquipo"
+                   placeholder="Rut Persona" readonly="readonly">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2">Nombre</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.Persona.Nombre" class="form-control" id="SerieEquipo"
+                   placeholder="Nombre" readonly="readonly">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2">Apellido Paterno</label>
+        <div class="col-lg-3">
+            <input  asp-for="@Model.Persona.ApellidoPaterno" class="form-control" id="SerieEquipo"
+                   placeholder="Apellido Paterno" readonly="readonly">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2">Apellido Materno</label>
+        <div class="col-lg-3">
+            <input  asp-for="@Model.Persona.ApellidoMaterno" class="form-control" id="SerieEquipo"
+                   placeholder="Apellido Materno" readonly="readonly">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-lg-2">User Name</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.Usuario.NormalizedUserName" class="form-control" id="SerieEquipo"
+                   placeholder="Nombre Usuario" readonly="readonly">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2">Email Usuario</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.Usuario.NormalizedEmail" class="form-control" id="SerieEquipo"
+                   placeholder="Email Usuario" readonly="readonly">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2">Rol Usuario</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.RolName" class="form-control" id="SerieEquipo"
+                   placeholder="Email Usuario" readonly="readonly">
+        </div>
+    </div>
+
+    <label><a asp-action="CambiarContraseña" asp-controller="Home"><i class="fa fa-sign-out fa-fw"></i>Editar Contraseña</a></label>
+
+</form>

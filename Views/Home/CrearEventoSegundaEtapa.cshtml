@@ -1,0 +1,541 @@
+﻿@model AddEvento
+
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>REGISTRAR EVENTO</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+
+
+
+
+<form asp-action="CrearEventoSegundaEtapa" enctype="multipart/form-data" class="form-horizontal" role="form" method="post" id="formid">
+    <div class="text-danger" asp-validation-summary="All"></div>   
+
+    <div class="form-group" hidden>
+        <label class="col-lg-1">Tipo Evento hidden</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.IdTipo" class="form-control" id="TipoEventoID2" readonly="readonly" />
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        <label  class="col-lg-1">Tipo Evento</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.Tipo.Tipo" class="form-control" id="TipoEventoID"  readonly="readonly"/>
+        </div>
+    </div>*@
+    <div class="form-group">
+        <label  class="col-lg-1">Tipo Evento</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.Tipo.Id" class="form-control" id="TipoEventoID" disabled>
+                <option value="" disabled selected>Selecciona tu opción</option>
+                @foreach (var kvp in Model.TipoEvento)
+                {
+                    <option value="@kvp.Id">@kvp.Tipo</option>
+
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WorkOrderAnterior" class="col-lg-1">Work Order</label>
+        <div class="col-lg-3">
+            <input asp-for="WorkOrderAnterior" class="form-control" placeholder="Work Order" id="WOanterior">
+        </div>
+        <div class="col-lg-2">
+            <a onclick="BuscarCoincidencia()" class="btn btn-sm btn-default">Buscar Coincidencia</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Cliente" class="col-lg-1">Cliente</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.EventoUnico.Cliente" class="form-control" id="IdCliente">
+                <option value="" disabled selected>Selecciona tu opción</option>
+                @foreach (var kvp in Model.Cliente)
+                {
+                    <option value="@kvp.Id">@kvp.Nombre</option>
+
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Equipo" class="col-lg-1">Equipo</label>
+        <div class="col-lg-3">
+            <select asp-for="@Model.EventoUnico.Equipo" class="form-control" id="IdEquipo" name="@Model.EventoUnico.Equipo">
+                <option value="" disabled selected>Selecciona tu opción</option>
+                @foreach (var kvp in Model.equipo)
+                {
+                    <option value="@kvp.Id">@kvp.Nombre</option>
+
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SerieEquipo" class="col-lg-1">Serie Equipo</label>
+        <div class="col-lg-3">
+            <input asp-for="SerieEquipo" class="form-control" id="SerieEquipo"
+                   placeholder="Serie Equipo">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Modelo" class="col-lg-1">Modelo</label>
+        <div class="col-lg-3">
+            <select id="IdModelo" name="@Model.EventoUnico.Modelo" asp-for="@Model.EventoUnico.Modelo" class="form-control" asp-items='@(new SelectList(String.Empty,"Id","Nombre"))'>
+                <option value="" disabled selected>Selecciona Equipo Primero</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Componente" class="col-lg-1">Componente</label>
+        <div class="col-lg-3">
+            <select id="IdComponente" name="@Model.EventoUnico.Componente" class="form-control" asp-for="@Model.EventoUnico.Componente" asp-items='@(new SelectList(String.Empty,"Id","Nombre"))'>
+                <option value="" disabled selected>Selecciona Modelo Primero</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="SerieComponente" class="col-lg-1">Serie Componente</label>
+        <div class="col-lg-3">
+            <input asp-for="SerieComponente" class="form-control" placeholder="Serie Componente">
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="HorasComponente" class="col-lg-1">Horas Componente</label>
+        <div class="col-lg-3">
+            <input asp-for="HorasComponente" class="form-control" id="HorasComponente"
+                   placeholder="Horas Componente">
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumeroParteComponente" class="col-lg-1">Numero Parte Componente</label>
+        <div class="col-lg-3">
+            <input asp-for="NumeroParteComponente" class="form-control" id="NumeroParteComponente"
+                   placeholder="Numero Parte Componente">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.EventoUnico.Parte" class="col-lg-1">Parte</label>
+        <div class="col-lg-3">
+            <select id="IdParte" name="@Model.EventoUnico.Parte" class="form-control" asp-for="@Model.EventoUnico.Parte" asp-items='@(new SelectList(String.Empty,"Id","Nombre"))'>
+                <option value="" disabled selected>Selecciona Componente Primero</option>
+            </select>
+        </div>
+    </div>
+
+@if (!User.IsInRole("Cliente"))
+{
+    <div class="form-group">
+        <label asp-for="@Model.AreaUnica.Id" class="col-lg-1">Area:</label>
+        <div class="col-lg-3">
+            <select id="IdArea" name="IdArea" class="form-control" asp-for="@Model.AreaUnica.Id" asp-items='@(new SelectList(@Model.ListaAreas,"Id","Nombre"))'>
+                <option value="" disabled selected>Selecciona tu opción</option>
+            </select>
+
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="@Model.SubAreaUnica.Id" class="col-lg-1">SubArea:</label>
+        <div class="col-lg-3">
+            <select id="IdSubArea" name="idSubArea" class="form-control" asp-for="@Model.SubAreaUnica.Id" asp-items='@(new SelectList(String.Empty,"Id","Nombre"))'>
+                <option value="" disabled selected>Selecciona Area Primero</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-1">Probabilidad</label>
+        <div class="col-lg-3">
+            <input asp-for="Probabilidad" class="form-control" id="IdProbabilidad"
+                   placeholder="Probabilidad">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-1">Consecuencia</label>
+        <div class="col-lg-3">
+            <input asp-for="Consecuencia" class="form-control" id="IdConsecuencia"
+                   placeholder="Consecuencia">        </div>
+    </div>
+
+
+}
+
+
+    <div class="form-group">
+        <label class="col-lg-1">Descripción</label>
+        <div class="col-lg-5">
+            <textarea asp-for="@Model.EventoUnico.Descripcion" name="@Model.EventoUnico.Descripcion" class="form-control" id="IdDescripcion" placeholder="Descripcion"> </textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label  class="col-lg-1">Archivos</label>
+        <div class="col-lg-5">
+            <p>Se puede seleccionar uno o mas archivos</p>
+            <input type="file" name="files" multiple />
+        </div>
+
+
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-1 col-lg-10">
+            <button type="submit" class="btn btn-default">Registar</button>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Alerta</font></h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <h5><font>Una vez registrado el evento no podra editarlo</font></h5>
+                        <h3><font color="black">¿Esta seguro de registrar el evento?</font></h3>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <button type="submit" class="btn btn-primary">Registar Evento</button>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+        $(function () {
+            $("#IdEquipo").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getModeloId";
+                var ddlsource = "#IdEquipo";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Modelo</option > "';
+                    //var items = "";
+                    $("#IdModelo").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#IdModelo").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+<script>
+        $(function () {
+            $("#IdModelo").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getComponenteId";
+                var ddlsource = "#IdModelo";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Modelo</option > "';
+                    //var items = "";
+                    $("#IdComponente").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdComponente").html(items);
+                })
+            });
+        });
+
+
+</script>
+
+<script>
+        $(function () {
+            $("#IdComponente").change(function () {
+                var url = '@Url.Content("~/")' + "Home/getParteId";
+                var ddlsource = "#IdComponente";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la parte</option > "';
+                    //var items = "";
+                    $("#IdParte").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                    });
+                    $("#IdParte").html(items);
+                })
+            });
+        });
+</script>
+
+<script>
+        $(function () {
+            $("#IdArea").change(function () {
+
+                var url = '@Url.Content("~/")' + "Home/getAreaId";
+                var ddlsource = "#IdArea";
+                $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la SubArea</option > "';
+                    $("#IdSubArea").empty();
+
+                    $.each(data, function (i, row) {
+
+
+                        items += "<option value='" + row.value + "' >" + row.text + "</option > "
+
+                    });
+                    $("#IdSubArea").html(items);
+                })
+            });
+
+
+        });
+
+
+</script>
+<script>
+        function BuscarCoincidencia() {
+            var valor = $('input[id=WOanterior]').val();
+            var action = "/Home/BuscarCoincidencia";
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: { wo: valor },
+                success: function (response) {
+                    console.log(response);
+                    //alert(response.length);
+                    if (response.length==null) {
+                        CargarDatos(response);
+                    } else {
+                        alert("No se encontraron coincidencias");
+                    }
+                }
+            });
+        }
+
+
+
+    
+
+
+
+</script>
+
+<script>
+        var items;
+        function CargarDatos(response) {
+            items = response;
+            $('input[id=TipoEventoID2').val(items.tipoEvento);
+            $('input[id=SerieEquipo]').val(items.serieEquipo);
+            $('input[id=serieComponente]').val(items.serieComponente);
+            if (items.horasComponente!=null){
+
+            $('input[id=HorasComponente]').val(parseInt(items.horasComponente));
+            }
+            //$('input[id=HorasComponente]').val(parseInt(items.horasComponente));
+            $('input[id=NumeroParteComponente]').val(items.numeroParteComponente);
+            if (items.probabilidad != null) {
+
+            $('input[id=IdProbabilidad]').val(parseInt(items.probabilidad));
+            }
+            //$('input[id=IdProbabilidad]').val(parseInt(items.probabilidad));
+            if (items.consecuencia != null) {
+
+            $('input[id=IdConsecuencia]').val(parseInt(items.consecuencia));
+            }
+            //$('input[id=IdConsecuencia]').val(parseInt(items.consecuencia));
+            $('textarea[id=IdDescripcion]').val(items.descripcion);
+             
+                var cliente = null;
+                var equipo = null
+                var modelo = null
+                var componente = null
+                var parte = null
+                var area = null;
+                var subarea = null;
+                var equipo = null;
+                var tipoevento = null;
+                tipoevento = parseInt(items.tipoEvento);
+                if (items.cliente != null) {
+
+                    cliente = parseInt(items.cliente);
+                }
+                if (items.equipo != null) {
+
+                    equipo = parseInt(items.equipo);
+                }
+                if (items.modelo != null) {
+
+                    modelo = parseInt(items.modelo);
+                }
+                if (items.componente != null) {
+
+                    componente = parseInt(items.componente);
+                }
+                if (items.parte != null) {
+
+                    parte = parseInt(items.parte);
+                }
+                if (items.area != null) {
+
+                    area = parseInt(items.area);
+                }
+                if (items.subArea != null) {
+
+                    subarea = parseInt(items.subArea);
+                }
+
+                var combo0 = document.forms["formid"].TipoEventoID;
+                var cantidad0 = combo0.length;
+                for (i = 0; i < cantidad0; i++) {
+                    if (combo0[i].value == tipoevento) {
+                        combo0[i].selected = true;
+                    }
+                }
+                var combo = document.forms["formid"].IdCliente;
+                var cantidad = combo.length;
+                for (i = 0; i < cantidad; i++) {
+                    if (combo[i].value == cliente) {
+                        combo[i].selected = true;
+                    }
+                }
+                var combo2 = document.forms["formid"].IdEquipo;
+                var cantidad2 = combo2.length;
+                for (i = 0; i < cantidad2; i++) {
+                    if (combo2[i].value == equipo) {
+                        combo2[i].selected = true;
+                    }
+                }
+                var combo3 = document.forms["formid"].IdArea;
+                var cantidad3 = combo3.length;
+                for (i = 0; i < cantidad3; i++) {
+                    if (combo3[i].value == area) {
+                        combo3[i].selected = true;
+                    }
+                }
+                //var combo4 = document.forms["formid"].IdSubArea;
+                //var cantidad4 = combo4.length;
+                //for (i = 0; i < cantidad4; i++) {
+                //    if (combo4[i].value == subarea) {
+                //        combo4[i].selected = true;
+                //    }
+                //}
+        if (modelo != null) {
+
+                    var url = '@Url.Content("~/")' + "Home/getModeloId";
+                var ddlsource = equipo;
+                $.getJSON(url, { id: equipo }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Modelo</option > "';
+                    //var items = "";
+                    $("#IdModelo").empty();
+                    $.each(data, function (i, row) {
+                        if (row.value==modelo) {
+                            items += "<option value='" + row.value + "' selected>" + row.text + "</option > "
+                        }
+                        else
+                        {
+                            items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                        }
+
+                    });
+                    $("#IdModelo").html(items);
+                })
+
+                var url = '@Url.Content("~/")' + "Home/getComponenteId";
+                var ddlsource = modelo;
+                $.getJSON(url, { id: modelo }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona el Componente</option > "';
+                    //var items = "";
+                    $("#IdComponente").empty();
+                    $.each(data, function (i, row) {
+                        if (row.value == componente) {
+                            items += "<option value='" + row.value + "' selected>" + row.text + "</option > "
+                        }
+                        else
+                        {
+
+                            items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                        }
+
+                    });
+                    $("#IdComponente").html(items);
+                })
+
+                var url = '@Url.Content("~/")' + "Home/getParteId";
+                var ddlsource = componente;
+                $.getJSON(url, { id: componente }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la parte</option > "';
+                    //var items = "";
+                    $("#IdParte").empty();
+                    $.each(data, function (i, row) {
+                        if (row.value == parte) {
+                            items += "<option value='" + row.value + "' selected>" + row.text + "</option > "
+                        }
+                        else
+                        {
+                            items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                        }
+
+                    });
+                    $("#IdParte").html(items);
+                })
+
+                }
+        if (area != null) {
+      
+                           var url = '@Url.Content("~/")' + "Home/getAreaId";
+                var ddlsource = area;
+                $.getJSON(url, { id: area }, function (data) {
+                    var items = '"<option value=0 disabled selected>Selecciona la SubArea</option > "';
+                    $("#IdSubArea").empty();
+                    $.each(data, function (i, row) {
+                        if (row.value == subarea) {
+                            items += "<option value='" + row.value + "' selected>" + row.text + "</option > "
+
+                        }
+                        else
+                        { 
+                            items += "<option value='" + row.value + "' >" + row.text + "</option > "
+                        }
+                      
+                    });
+                    $("#IdSubArea").html(items);
+                })
+
+        }
+
+
+          
+        }
+</script>

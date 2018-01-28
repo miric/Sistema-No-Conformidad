@@ -1,0 +1,137 @@
+﻿@model ListaArea
+@{
+    int idArea = 0;
+    if (Model.AreaUnica.Id != 0)
+    {
+        idArea = Model.AreaUnica.Id;
+    }
+    string nombre = null;
+    if (Model.AreaUnica.Nombre != null)
+    {
+        nombre = Model.AreaUnica.Nombre.TrimEnd();
+    }
+}
+<div class="row">
+    <!-- Welcome -->
+    <div class="col-lg-12">
+        <div class="alert alert-info">
+            <i></i><P>EDITAR AREA</P>
+
+        </div>
+    </div>
+    <!--end  Welcome -->
+</div>
+<form asp-action="FormularioEditArea" class="form-horizontal" method="post">
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="@Model.AreaUnica.Id" class="col-lg-2">ID</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.AreaUnica.Id" class="form-control" id="wolabel" value="@Model.AreaUnica.Id"
+                   placeholder="" readonly="readonly">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2">Nombre</label>
+        <div class="col-lg-3">
+            <input asp-for="NombreArea" class="form-control" id="wolabel" value="@nombre"
+                   placeholder="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 ">Nombre Jefe Area:</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.NombreCompleto" class="form-control" placeholder="" readonly="readonly" id="ResponsableId" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 ">Rut Jefe Area:</label>
+        <div class="col-lg-3">
+            <input asp-for="@Model.RutPersona" class="form-control" placeholder="" required readonly="readonly" id="RutResponsableId" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="submit" class="btn btn-warning">Editar</button>
+            <a class="btn btn-primary" data-toggle="modal" data-target="#myModalBuscar">Jefe Area</a>
+            <a asp-action="Index" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
+
+
+
+</form>
+<div class="modal fade" id="myModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="font-weight: bold;"><font color="#585858">Asignar Jefe Area</font></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Nombre Persona</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" id="NombrePersonaInvolucrado" placeholder="Nombre Persona">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"></label>
+                        <div class="col-lg-8">
+                            <a class="btn btn-primary btn-sm" onclick="getPersonaAjax('getPersonaModalAjax')">
+                                Buscar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="tablaResponsable"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getPersonaAjax(action) {
+        var valor = document.getElementById("NombrePersonaInvolucrado").value;
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: { valor },
+            success: function (response) {
+                console.log(response);
+                OnSuccess2(response);
+            }
+        });
+    }
+</script>
+<script>
+    var items;
+    function OnSuccess2(response) {
+        items = response;
+        if (response.length == 0) {
+            alert("No hay personas con ese nombre");
+        }
+        else {
+            var datos = "<thead><tr><th>Rut</th><th>Nombre</th><th>Area</th><th>SubArea</th><th>Cargo</th><th>Acción</th></tr></thead><tbody>";
+            $.each(items, function (i, row) {
+                datos += "<tr><td>" + row.rut + "</td><td>" + row.nombre + "</td><td>" + row.area + "</td><td>" + row.subArea + "</td><td>" + row.cargo + "</td><td>" + "<a onclick='AsignarResponsable(" + '"' + row.rut + '"' + ',' + '"' + row.nombre + '"' + ")' class='btn btn-primary btn-sm'>Asignar</a>" + "</td></tr>"
+            });
+            datos += "</tbody></thead>";
+            $('#tablaResponsable').html(datos)
+        }
+    }
+</script>
+<script>
+    function AsignarResponsable(rut, nombre) {
+        var action = "AsignarResponsableModal";
+        $('input[id=ResponsableId]').val(nombre);
+        $('input[id=RutResponsableId]').val(rut);
+    }
+</script>
